@@ -83,9 +83,15 @@ private:
 	*/
 	void HandleInput();
 
+	void UpdateSpriteGrid(WireframeSprite*);
+
 	void UpdateCollisions();
 
-	void HandleSpriteCollision(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding);
+	void HandleSpriteCollisionBruteForce(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding);
+	void HandleSpriteCollisionUniformGrid(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding);
+
+	void  CheckCollision(WireframeSprite* spriteA, std::vector<WireframeSprite*>& spritesToCheck, unsigned int startingIndex
+		, std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding);
 
 	static bool TestBoundingBoxCollision(WireframeSprite& spriteA, WireframeSprite& spriteB);
 	static bool TestSATCollision(WireframeSprite& spriteA, WireframeSprite& spriteB);
@@ -105,7 +111,11 @@ private:
 	bool _collideBullets = true;					// should the bullets collide with the asteroids
 
 	unsigned int _nCollisionsThisFrame = 0;			// Amount of collisions on the current frame
-	CollisionMode _collisionMode = CollisionMode::AABB;	// Type of narrow phase collision to be used
+	unsigned int _nCollisionTestsThisFrame = 0;
+
+	int mode = 1;
+
+	CollisionMode _collisionMode = CollisionMode::SEPERATED_AXIS_THEOREM;	// Type of narrow phase collision to be used
 	sf::Clock _lastInputClock;						// Timer to limit spam of bullet firing			
 	UniformGrid* _grid = nullptr;					// Grid for uniform spatial partitioning
 

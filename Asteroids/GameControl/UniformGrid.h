@@ -2,6 +2,8 @@
 #include <vector>
 #include "../GameObjects/WireframeSprite.h"
 
+class Game;
+
 /* Struct Cell
  * Holds a container with pointers to all objects within a grid cell
 */
@@ -15,6 +17,7 @@ struct Cell
 */
 class UniformGrid
 {
+	friend class Game;
 public:
 	UniformGrid();
 	~UniformGrid();
@@ -69,6 +72,7 @@ public:
 	*			<Cell&> - Targeted cell
 	*/
 	Cell& GetCell(const sf::Vector2f& pos);
+
 
 private:
 	// Members

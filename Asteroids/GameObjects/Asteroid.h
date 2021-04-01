@@ -65,8 +65,8 @@ private:
 	static const int ASTEROID_VERTS = 11;				// Number of verticies on the asteroid
 	sf::Color ASTEROID_COLOR = sf::Color::Red;			// color of the asteroid
 	static constexpr float ASTEROID_THICKNESS = 1;		// Thickness of the asteroid outline
-	static constexpr double MINIMUM_VERT_ANGLE = 0.2;	// Minimum angle between verticies (radians)
-	static constexpr float MAXIMUM_SPEED = 2.5f;		// Maximum spawn speed		// Minimum spawn speed
+	static constexpr double MINIMUM_VERT_ANGLE = 0.1;	// Minimum angle between verticies (radians)
+	static constexpr float MAXIMUM_SPEED = 2.0f;		// Maximum spawn speed		// Minimum spawn speed
 
 	// Member Variables
 	static std::map<Size, int> _radi;					// Contains the different radius sizes

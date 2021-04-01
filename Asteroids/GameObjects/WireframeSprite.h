@@ -42,7 +42,7 @@ protected:
 
 private:
 	static constexpr float HITBOX_THICKNESS = 1.0f;
-	bool isHitboxVisible = true;
+	bool isHitboxVisible = false;
 
 	int _ownerCellIndex = -1;
 	Cell* _ownerCell = nullptr;

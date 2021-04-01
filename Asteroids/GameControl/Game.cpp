@@ -2,6 +2,9 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <iostream>
+#include <algorithm>
+
 Game::Game(sf::RenderWindow* window)
 	:
 	_window(window)
@@ -9,13 +12,12 @@ Game::Game(sf::RenderWindow* window)
 	// Seed Random Generation
 	srand((unsigned int)time(NULL));
 
-	// Generate player
-	this->_player = new Player;
-
-
 	// Create uniform grid
 	this->_grid = new UniformGrid();
-	
+
+	// Generate player
+	this->_player = new Player;
+	_grid->AddObject(this->_player);
 
 	// Generate asteroids
 	for (unsigned int i = 0; i < NUMBER_ASTEROIDS; i++)
@@ -92,6 +94,7 @@ void Game::UpdateModel()
 
 	// Update Player
 	_player->Update();
+	UpdateSpriteGrid(_player);
 
 	// Update Asteroids
 	this->UpdateAsteroids();
@@ -104,6 +107,8 @@ void Game::UpdateModel()
 
 	// cleanup any bullets marked invisible
 	this->CleanupBullets();
+
+	std::cout << _nCollisionTestsThisFrame << std::endl;
 }
 
 /*void UpdateAsteroids
@@ -212,6 +217,9 @@ for (int i = 0; i < this->_bullets.size(); i++)
 	// Check if bullet has disappeared from screen
 	if (!this->_bullets[i]->IsVisible())
 	{
+		// Remove bullet from grid system
+		this->_grid->RemoveObject(this->_bullets[i]);
+
 		// Delete bullet and remove entry from vector
 		delete this->_bullets[i];
 		this->_bullets.erase(this->_bullets.begin() + i);
@@ -239,6 +247,7 @@ void Game::HandleInput()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		this->_bullets.push_back(new Bullet(this->_player->GetPosition(), this->_player->GetRotation()));
+		_grid->AddObject(this->_bullets.back());
 	}
 
 	// Input for toggling god mode
@@ -248,6 +257,22 @@ void Game::HandleInput()
 	// Input for toggling asteroid collisions
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
 		this->_collideAsteroids = !this->_collideAsteroids;
+
+	// Input for toggling asteroid collisions
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+		this->mode = -this->mode;
+}
+
+void Game::UpdateSpriteGrid(WireframeSprite* sprite)
+{
+	// Check to see if the ball has changed cells
+	Cell* newCell = &_grid->GetCell((sprite)->GetPosition());
+	if (newCell != (sprite)->GetOwnerCell())
+	{
+		// update owner cell
+		this->_grid->RemoveObject(sprite);
+		_grid->AddObject(sprite, newCell);
+	}
 }
 
 void Game::UpdateCollisions()
@@ -258,11 +283,16 @@ void Game::UpdateCollisions()
 	
 	// reset number of collisions before calculations
 	_nCollisionsThisFrame = 0;
+	_nCollisionTestsThisFrame = 0;
 
+	if (mode == -1)
 	// brute force approach
-	this->HandleSpriteCollision((this->_collisionMode == CollisionMode::AABB ? TestBoundingBoxCollision : TestSATCollision),
-		asteroidsToBeSplit, isPlayerColliding);
+ 		this->HandleSpriteCollisionBruteForce((this->_collisionMode == CollisionMode::AABB ? TestBoundingBoxCollision : TestSATCollision),
+ 		asteroidsToBeSplit, isPlayerColliding);
 
+	else
+		this->HandleSpriteCollisionUniformGrid((this->_collisionMode == CollisionMode::AABB ? TestBoundingBoxCollision : TestSATCollision),
+			asteroidsToBeSplit, isPlayerColliding);
 
 	// Split all asteroids where needed
 	for (unsigned int i = 0; i < asteroidsToBeSplit.size(); i++)
@@ -281,12 +311,13 @@ void Game::UpdateCollisions()
 	}
 }
 
-void Game::HandleSpriteCollision(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding)
+void Game::HandleSpriteCollisionBruteForce(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding)
 {
 	int asteroidIndex = 0;
 
 	for (auto itAsteroid = this->_asteroids.begin(); itAsteroid != this->_asteroids.end(); itAsteroid++, asteroidIndex++)
 	{
+		_nCollisionTestsThisFrame++;// test forr player
 		// Player collision
 		if (this->_collidePlayer)
 			if (collisionAlgorithm(*this->_player, **itAsteroid))
@@ -298,7 +329,7 @@ void Game::HandleSpriteCollision(std::function<bool(WireframeSprite&, WireframeS
 		if (this->_collideBullets)
 			for (auto itBullet = this->_bullets.begin(); itBullet != this->_bullets.end(); itBullet++)
 			{
-
+				_nCollisionTestsThisFrame++; // collision tests for bullets
 				// if asteroid colliding with bullet, add the index to the list of asteroids to be split after collision testing
 				if (collisionAlgorithm(**itBullet, **itAsteroid))
 				{
@@ -313,12 +344,112 @@ void Game::HandleSpriteCollision(std::function<bool(WireframeSprite&, WireframeS
 		if (this->_collideAsteroids)
 			for (auto itAsteroidTwo = itAsteroid + 1; itAsteroidTwo != this->_asteroids.end(); itAsteroidTwo++)
 			{
+				_nCollisionTestsThisFrame++; // collision tests for asteroids
 				// Check for collision of pair
 				if (collisionAlgorithm(**itAsteroid, **itAsteroidTwo))
 				{
 					this->_nCollisionsThisFrame++;
 				}
 			}
+	}
+}
+
+void Game::HandleSpriteCollisionUniformGrid(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding)
+{
+	auto cells = &this->_grid->_cells;
+
+	// loop through all cells
+	for (int i = 0; i < cells->size(); i++)
+	{
+		Cell* cell = &(*cells)[i];
+
+		// get cell x and y
+		int x = i % this->_grid->_numXCells;
+		int y = i / this->_grid->_numXCells;
+
+		// loop through cell objects
+		for (int j = 0; j < cell->_objects.size(); j++)
+		{
+			WireframeSprite* sprite = cell->_objects[j];	// local pointer to current ball in current cell
+
+			// update collisions with starting cell
+			CheckCollision(sprite, cell->_objects, j + 1, collisionAlgorithm, asteroidsToBeSplit, isPlayerColliding);
+
+			// update collision with neighbor cells
+			if (x > 0)	// checks to the left
+			{
+				// check left
+				CheckCollision(sprite, _grid->GetCell(x - 1, y)._objects, 0, collisionAlgorithm, asteroidsToBeSplit, isPlayerColliding);
+				if (y > 0)
+				{
+					// check top left cell x-1 y-1
+					CheckCollision(sprite, _grid->GetCell(x - 1, y - 1)._objects, 0, collisionAlgorithm, asteroidsToBeSplit, isPlayerColliding);
+				}
+				// Check bottom left
+				if (y < _grid->_numYCells - 1)
+				{
+					CheckCollision(sprite, _grid->GetCell(x - 1, y + 1)._objects, 0, collisionAlgorithm, asteroidsToBeSplit, isPlayerColliding);
+				}
+			}
+			// Check top
+			if (y > 0)
+			{
+				CheckCollision(sprite, _grid->GetCell(x, y - 1)._objects, 0, collisionAlgorithm, asteroidsToBeSplit, isPlayerColliding);
+			}
+		}
+	}
+}
+
+void Game::CheckCollision(WireframeSprite* spriteA, std::vector<WireframeSprite*>& spritesToCheck, unsigned int startingIndex,std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding)
+{
+	for (unsigned int i = startingIndex; i < spritesToCheck.size(); i++)
+	{
+		// test being performed, increase number for data collection
+		this->_nCollisionTestsThisFrame++;
+		if (collisionAlgorithm(*spriteA, *spritesToCheck[i]))
+		{
+			// Collision happened, increase number for data collection
+			this->_nCollisionsThisFrame++;
+
+			WireframeSprite* pSpriteA = spriteA;
+			WireframeSprite* pSpriteB = spritesToCheck[i];
+
+			// loop through to check in both directions
+			for (int l = 0; l < 2; l++)
+			{
+				// on 2nd iteration swap pointers
+				if (l == 1)
+				{
+					pSpriteA = spritesToCheck[i];
+					pSpriteB = spriteA;
+				}
+
+				const char* spriteAtype = typeid(*pSpriteA).name();
+				const char* spriteBtype = typeid(*pSpriteB).name();
+
+				// Test for player collision
+				if (std::strcmp(spriteAtype, "class Player") == 0 && std::strcmp(spriteBtype, "class Asteroid") == 0)
+				{
+					isPlayerColliding = true;
+				}
+
+				// Test for bullet against asteroid collision
+				else if (std::strcmp(spriteAtype, "class Bullet") == 0 && std::strcmp(spriteBtype, "class Asteroid") == 0)
+				{
+					// find index in array for deletion
+					auto itr = std::find(this->_asteroids.begin(), this->_asteroids.end(), pSpriteB);
+					int index = std::distance(this->_asteroids.begin(), itr);
+
+					// clean up bullet after hitting an asteroid
+					Bullet* bulletToDestroy = dynamic_cast<Bullet*>(pSpriteA);
+					if (bulletToDestroy)
+						bulletToDestroy->Disable();
+
+					// mark the asteroid to be split
+					asteroidsToBeSplit.push_back(index);
+				}
+			}
+		}
 	}
 }
 
