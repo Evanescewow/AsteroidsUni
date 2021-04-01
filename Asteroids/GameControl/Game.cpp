@@ -287,9 +287,6 @@ void Game::HandleSpriteCollision(std::function<bool(WireframeSprite&, WireframeS
 
 	for (auto itAsteroid = this->_asteroids.begin(); itAsteroid != this->_asteroids.end(); itAsteroid++, asteroidIndex++)
 	{
-		// reset asteroid transparency
-		(*itAsteroid)->_shape.setFillColor(sf::Color::Transparent);
-
 		// Player collision
 		if (this->_collidePlayer)
 			if (collisionAlgorithm(*this->_player, **itAsteroid))

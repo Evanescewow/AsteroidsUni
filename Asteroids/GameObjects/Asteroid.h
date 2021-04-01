@@ -61,7 +61,7 @@ private:
 
 private:
 	// Constants
-	static constexpr float ROTATION_SPEED = 0.0f;		// Speed of asteroid spin
+	static constexpr float ROTATION_SPEED = 1.0f;		// Speed of asteroid spin
 	static const int ASTEROID_VERTS = 11;				// Number of verticies on the asteroid
 	sf::Color ASTEROID_COLOR = sf::Color::Red;			// color of the asteroid
 	static constexpr float ASTEROID_THICKNESS = 1;		// Thickness of the asteroid outline

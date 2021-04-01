@@ -1,14 +1,10 @@
 #pragma once
 #include <SFML/graphics.hpp>
 struct Cell;
-class Game;
 
 class WireframeSprite
 {
 public:
-	// Allow game to be a friend so they can manipulate sprites during collision
-	friend class Game;
-
 	WireframeSprite(size_t pointCount);
 	~WireframeSprite();
 
