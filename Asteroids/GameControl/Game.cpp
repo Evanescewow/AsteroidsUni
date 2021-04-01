@@ -258,9 +258,9 @@ void Game::HandleInput()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
 		this->_collideAsteroids = !this->_collideAsteroids;
 
-	// Input for toggling asteroid collisions
+	// Input for toggling broad phase collision mode
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-		this->mode = -this->mode;
+		this->_broardCollisionMode = (this->_broardCollisionMode == BroadCollisionMode::BRUTE_FORCE ? BroadCollisionMode::UNIFORM_GRID : BroadCollisionMode::BRUTE_FORCE);
 }
 
 void Game::UpdateSpriteGrid(WireframeSprite* sprite)
@@ -285,13 +285,13 @@ void Game::UpdateCollisions()
 	_nCollisionsThisFrame = 0;
 	_nCollisionTestsThisFrame = 0;
 
-	if (mode == -1)
+	if (_broardCollisionMode == BroadCollisionMode::BRUTE_FORCE)
 	// brute force approach
- 		this->HandleSpriteCollisionBruteForce((this->_collisionMode == CollisionMode::AABB ? TestBoundingBoxCollision : TestSATCollision),
+ 		this->HandleSpriteCollisionBruteForce((this->_narrowCollisionMode == NarrowCollisionMode::AABB ? TestBoundingBoxCollision : TestSATCollision),
  		asteroidsToBeSplit, isPlayerColliding);
 
 	else
-		this->HandleSpriteCollisionUniformGrid((this->_collisionMode == CollisionMode::AABB ? TestBoundingBoxCollision : TestSATCollision),
+		this->HandleSpriteCollisionUniformGrid((this->_narrowCollisionMode == NarrowCollisionMode::AABB ? TestBoundingBoxCollision : TestSATCollision),
 			asteroidsToBeSplit, isPlayerColliding);
 
 	// Split all asteroids where needed
@@ -317,7 +317,7 @@ void Game::HandleSpriteCollisionBruteForce(std::function<bool(WireframeSprite&, 
 
 	for (auto itAsteroid = this->_asteroids.begin(); itAsteroid != this->_asteroids.end(); itAsteroid++, asteroidIndex++)
 	{
-		_nCollisionTestsThisFrame++;// test forr player
+		_nCollisionTestsThisFrame++;// test for player
 		// Player collision
 		if (this->_collidePlayer)
 			if (collisionAlgorithm(*this->_player, **itAsteroid))
@@ -428,26 +428,30 @@ void Game::CheckCollision(WireframeSprite* spriteA, std::vector<WireframeSprite*
 				const char* spriteBtype = typeid(*pSpriteB).name();
 
 				// Test for player collision
-				if (std::strcmp(spriteAtype, "class Player") == 0 && std::strcmp(spriteBtype, "class Asteroid") == 0)
-				{
-					isPlayerColliding = true;
-				}
+				if (this->_collidePlayer)
+					if (std::strcmp(spriteAtype, "class Player") == 0 && std::strcmp(spriteBtype, "class Asteroid") == 0)
+					{
+						isPlayerColliding = true;
+					}
 
 				// Test for bullet against asteroid collision
-				else if (std::strcmp(spriteAtype, "class Bullet") == 0 && std::strcmp(spriteBtype, "class Asteroid") == 0)
-				{
-					// find index in array for deletion
-					auto itr = std::find(this->_asteroids.begin(), this->_asteroids.end(), pSpriteB);
-					int index = std::distance(this->_asteroids.begin(), itr);
+				if (this->_collideBullets)
+					if (std::strcmp(spriteAtype, "class Bullet") == 0 && std::strcmp(spriteBtype, "class Asteroid") == 0)
+					{
+						// find index in array for deletion
+						auto itr = std::find(this->_asteroids.begin(), this->_asteroids.end(), pSpriteB);
+						int index = std::distance(this->_asteroids.begin(), itr);
 
-					// clean up bullet after hitting an asteroid
-					Bullet* bulletToDestroy = dynamic_cast<Bullet*>(pSpriteA);
-					if (bulletToDestroy)
-						bulletToDestroy->Disable();
+						// clean up bullet after hitting an asteroid
+						Bullet* bulletToDestroy = dynamic_cast<Bullet*>(pSpriteA);
+						if (bulletToDestroy)
+							bulletToDestroy->Disable();
 
-					// mark the asteroid to be split
-					asteroidsToBeSplit.push_back(index);
-				}
+						// mark the asteroid to be split
+						asteroidsToBeSplit.push_back(index);
+					}
+
+				// Implement asteroid collision
 			}
 		}
 	}

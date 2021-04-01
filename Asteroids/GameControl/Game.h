@@ -6,10 +6,16 @@
 #include <functional>
 #include <vector>
 
-enum class CollisionMode
+enum class NarrowCollisionMode
 {
 	AABB,
 	SEPERATED_AXIS_THEOREM
+};
+
+enum class BroadCollisionMode
+{
+	BRUTE_FORCE,
+	UNIFORM_GRID
 };
 
 
@@ -113,9 +119,8 @@ private:
 	unsigned int _nCollisionsThisFrame = 0;			// Amount of collisions on the current frame
 	unsigned int _nCollisionTestsThisFrame = 0;
 
-	int mode = 1;
-
-	CollisionMode _collisionMode = CollisionMode::SEPERATED_AXIS_THEOREM;	// Type of narrow phase collision to be used
+	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::BRUTE_FORCE;				// type of broad phase collision to be used
+	NarrowCollisionMode _narrowCollisionMode = NarrowCollisionMode::SEPERATED_AXIS_THEOREM;	// Type of narrow phase collision to be used
 	sf::Clock _lastInputClock;						// Timer to limit spam of bullet firing			
 	UniformGrid* _grid = nullptr;					// Grid for uniform spatial partitioning
 
