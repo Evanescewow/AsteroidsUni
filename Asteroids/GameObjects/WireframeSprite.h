@@ -1,0 +1,54 @@
+#pragma once
+#include <SFML/graphics.hpp>
+struct Cell;
+class Game;
+
+class WireframeSprite
+{
+public:
+	// Allow game to be a friend so they can manipulate sprites during collision
+	friend class Game;
+
+	WireframeSprite(size_t pointCount);
+	~WireframeSprite();
+
+
+	virtual void Update();
+	virtual void Draw(sf::RenderWindow* window);
+
+	sf::Vector2f GetPosition() const { return this->_position; }
+	sf::Vector2f GetVelocity() const { return this->_velocity; }
+	float GetRotation() const { return this->_shape.getRotation(); }
+
+	std::vector<sf::Vector2f> GetPoints() const { return this->_pointsNextFrame;  }
+
+	Cell* GetOwnerCell() const { return this->_ownerCell; }
+	int GetOwnerCellIndex() const {return this->_ownerCellIndex;}
+
+	sf::FloatRect GetBoundingRectangle() const { return this->_shape.getGlobalBounds(); }
+
+
+	void SetOwnerCell(Cell* cell) { this->_ownerCell = cell; }
+	void SetOwnerCellIndex(int index) { this->_ownerCellIndex = index; }
+
+protected:
+	void RotateMesh(float RotationDegrees);
+	void WrapCoordinates();
+
+protected:
+	sf::ConvexShape _shape;
+	sf::RectangleShape hitboxShape;
+
+	sf::Vector2f _velocity;
+	sf::Vector2f _position{ 0.0f, 0.0f };
+
+	std::vector<sf::Vector2f> _pointsNextFrame;
+
+private:
+	static constexpr float HITBOX_THICKNESS = 1.0f;
+	bool isHitboxVisible = true;
+
+	int _ownerCellIndex = -1;
+	Cell* _ownerCell = nullptr;
+};
+
