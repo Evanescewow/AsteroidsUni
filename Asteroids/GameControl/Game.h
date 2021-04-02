@@ -2,21 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Asteroid.h"
+#include "CollisionHandler.h"
 #include "UniformGrid.h"
 #include <functional>
 #include <vector>
-
-enum class NarrowCollisionMode
-{
-	AABB,
-	SEPERATED_AXIS_THEOREM
-};
-
-enum class BroadCollisionMode
-{
-	BRUTE_FORCE,
-	UNIFORM_GRID
-};
 
 
 class Game
@@ -91,17 +80,6 @@ private:
 
 	void UpdateSpriteGrid(WireframeSprite*);
 
-	void UpdateCollisions();
-
-	void HandleSpriteCollisionBruteForce(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding);
-	void HandleSpriteCollisionUniformGrid(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding);
-
-	void  CheckCollision(WireframeSprite* spriteA, std::vector<WireframeSprite*>& spritesToCheck, unsigned int startingIndex
-		, std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, std::vector<int>& asteroidsToBeSplit, bool& isPlayerColliding);
-
-	static bool TestBoundingBoxCollision(WireframeSprite& spriteA, WireframeSprite& spriteB);
-	static bool TestSATCollision(WireframeSprite& spriteA, WireframeSprite& spriteB);
-
 private:
 	sf::RenderWindow* _window = nullptr;
 
@@ -116,15 +94,9 @@ private:
 	bool _collideAsteroids = true;					// Should collision between asteroids be performed
 	bool _collideBullets = true;					// should the bullets collide with the asteroids
 
-	unsigned int _nCollisionsThisFrame = 0;			// Amount of collisions on the current frame
-	unsigned int _nCollisionTestsThisFrame = 0;
-
-	sf::Color ASTEROID_COLLISION_COLOR = sf::Color::Green;
-
-	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::BRUTE_FORCE;				// type of broad phase collision to be used
-	NarrowCollisionMode _narrowCollisionMode = NarrowCollisionMode::SEPERATED_AXIS_THEOREM;	// Type of narrow phase collision to be used
 	sf::Clock _lastInputClock;						// Timer to limit spam of bullet firing			
 	UniformGrid* _grid = nullptr;					// Grid for uniform spatial partitioning
+	CollisionHandler* _collisionHandler = nullptr;	// Handles all application collision logic
 
 	// Constants
 	static constexpr float SHOOT_INTERVAL = 0.2f;	// interval in seconds between each bullet firing

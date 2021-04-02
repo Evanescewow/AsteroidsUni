@@ -7,7 +7,7 @@ class Game;
 class WireframeSprite
 {
 public:
-	friend class Game;
+	friend class CollisionHandler;
 
 	WireframeSprite(size_t pointCount);
 	~WireframeSprite();

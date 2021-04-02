@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameControl\CollisionHandler.cpp" />
     <ClCompile Include="GameObjects\Bullet.cpp" />
     <ClCompile Include="GameObjects\Asteroid.cpp" />
     <ClCompile Include="GameControl\Game.cpp" />
@@ -28,6 +29,7 @@
     <ClCompile Include="GameControl\UniformGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameControl\CollisionHandler.h" />
     <ClInclude Include="GameObjects\Bullet.h" />
     <ClInclude Include="GameObjects\Asteroid.h" />
     <ClInclude Include="GameControl\Game.h" />

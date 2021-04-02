@@ -2,7 +2,7 @@
 #include <vector>
 #include "../GameObjects/WireframeSprite.h"
 
-class Game;
+class CollisionHandler;
 
 /* Struct Cell
  * Holds a container with pointers to all objects within a grid cell
@@ -17,7 +17,7 @@ struct Cell
 */
 class UniformGrid
 {
-	friend class Game;
+	friend class CollisionHandler;
 public:
 	UniformGrid();
 	~UniformGrid();

@@ -16,21 +16,29 @@ public:
 	 * Assigns basic object variables such as outline thickness and color. After which it will build the shape
 	 * and generate the initial speed and position variables.
 	 * Params:
+	 * <uint> arrayIndex - index of itself within the game array
 	 * <int> size - size of the new asteroid (defaults to large)
 	 * <Vector2f> pos - position vector for the new asteroid if not random (defaults 0)
-	 * <Vector2f> velocity - velocity vector for the new asteroid if not random (defaults 0)	 
+	 * <Vector2f> velocity - velocity vector for the new asteroid if not random (defaults 0)
 	*/
-	Asteroid(Size size = Size::LARGE, sf::Vector2f pos = { 0,0 }, sf::Vector2f velocity = { 0,0 });
+	Asteroid(unsigned int arrayIndex, Size size = Size::LARGE, sf::Vector2f pos = { 0,0 }, sf::Vector2f velocity = { 0,0 });
 	~Asteroid();
 
 	/*void Update override
 	 * Brief:
-	 * Overrides WireframeSprite::Update(). Updates the asteroid's rotation and wraps the object 
+	 * Overrides WireframeSprite::Update(). Updates the asteroid's rotation and wraps the object
 	 * around the screen if needed.
 	*/
 	void Update() override;
 
 	Size GetSize() const { return this->_size; } // Getter for the asteroid size
+	unsigned int GetObjectContainerIndex() const { return this->_indexInGameObjectArray; }	// getter for object index
+	void UpdateObjectContainerIndex(unsigned int index) { this->_indexInGameObjectArray = index; }
+
+	// Getter and setter for asteroid splitting
+	bool ShouldSplit() const { return this->_shouldBeSplitNextFrame; }
+	void MarkForSplitting() { this->_shouldBeSplitNextFrame = true; }
+
 
 private:
 	/* void BuildShape
@@ -67,6 +75,10 @@ private:
 	static constexpr float ASTEROID_THICKNESS = 1;		// Thickness of the asteroid outline
 	static constexpr double MINIMUM_VERT_ANGLE = 0.1;	// Minimum angle between verticies (radians)
 	static constexpr float MAXIMUM_SPEED = 2.0f;		// Maximum spawn speed		// Minimum spawn speed
+
+	bool _shouldBeSplitNextFrame = false;				// is the asteroid marked to be split
+	unsigned int _indexInGameObjectArray = 0;			// Stores the index of itself within the game array
+														// This is a performance enhancement to cut back searches
 
 	// Member Variables
 	static std::map<Size, int> _radi;					// Contains the different radius sizes

@@ -14,14 +14,16 @@ std::map<Asteroid::Size, int> Asteroid::_radi = { { Asteroid::Size::LARGE, 55 },
  * Assigns basic object variables such as outline thickness and color. After which it will build the shape
  * and generate the initial speed and position variables.
  * Params:
+ * <uint> arrayIndex - index of itself within the game array
  * <int> size - size of the new asteroid (defaults to large)
  * <Vector2f> pos - position vector for the new asteroid if not random (defaults 0)
  * <Vector2f> velocity - velocity vector for the new asteroid if not random (defaults 0)
 */
-Asteroid::Asteroid(Size size, sf::Vector2f pos, sf::Vector2f velocity)
+Asteroid::Asteroid(unsigned int arrayIndex, Size size, sf::Vector2f pos, sf::Vector2f velocity)
 	:
 	WireframeSprite(ASTEROID_VERTS),
-	_size((Asteroid::Size)size)
+	_size((Asteroid::Size)size),
+	_indexInGameObjectArray(arrayIndex)
 {
 	// Setup basic properties
 	this->_shape.setFillColor(sf::Color::Transparent);
