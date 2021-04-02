@@ -133,6 +133,9 @@ Console::ParsedCommandData Console::ParseCommand(std::string& text)
 		std::string errMsg = ('"' + commandWord + "\" is not a valid command.");
 		this->PushBackMesage(errMsg, ERROR_COLOUR);
 	}
+
+	// no valid commands, return invalid
+	return ParsedCommandData(CommandType::INVALID_COMMAND);
 }
 
 void Console::PushBackMesage(std::string& text, sf::Color textColour)
