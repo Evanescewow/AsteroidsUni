@@ -66,6 +66,9 @@ void Asteroid::Update()
 
 	// Wrap asteroids to screen
 	this->WrapCoordinates();
+
+	// Reset colour, will be changed if they're colliding with other asteroids
+	this->_shape.setOutlineColor(ASTEROID_COLOR);
 }
 
 /* void BuildShape

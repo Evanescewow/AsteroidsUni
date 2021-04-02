@@ -8,7 +8,7 @@ int main(void)
 {
 	//setup game window
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 24), WINDOW_TITLE, sf::Style::Titlebar | sf::Style::Close);
-	//window.setFramerateLimit(WINDOW_MAX_FRAMERATE);
+	window.setFramerateLimit(WINDOW_MAX_FRAMERATE);
 
 	// Create clock for generating fps counter
 	sf::Clock clock;

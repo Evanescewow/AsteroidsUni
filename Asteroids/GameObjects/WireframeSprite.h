@@ -1,10 +1,14 @@
 #pragma once
 #include <SFML/graphics.hpp>
 struct Cell;
+class Game;
+
 
 class WireframeSprite
 {
 public:
+	friend class Game;
+
 	WireframeSprite(size_t pointCount);
 	~WireframeSprite();
 

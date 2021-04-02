@@ -110,7 +110,7 @@ private:
 	Player* _player = nullptr;						// player triangle object
 	std::vector<Asteroid*> _asteroids;				// container for the asteroids
 	std::vector<Bullet*> _bullets;					// container for the bullet objects
-	size_t NUMBER_ASTEROIDS = 500;					// Number of asteroids on the screen
+	size_t NUMBER_ASTEROIDS = 5;					// Number of asteroids on the screen
 
 	bool _collidePlayer = true;						// Should tests for collision with the player be performed (godmode)
 	bool _collideAsteroids = true;					// Should collision between asteroids be performed
@@ -118,6 +118,8 @@ private:
 
 	unsigned int _nCollisionsThisFrame = 0;			// Amount of collisions on the current frame
 	unsigned int _nCollisionTestsThisFrame = 0;
+
+	sf::Color ASTEROID_COLLISION_COLOR = sf::Color::Green;
 
 	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::BRUTE_FORCE;				// type of broad phase collision to be used
 	NarrowCollisionMode _narrowCollisionMode = NarrowCollisionMode::SEPERATED_AXIS_THEOREM;	// Type of narrow phase collision to be used

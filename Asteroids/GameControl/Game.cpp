@@ -348,6 +348,8 @@ void Game::HandleSpriteCollisionBruteForce(std::function<bool(WireframeSprite&, 
 				// Check for collision of pair
 				if (collisionAlgorithm(**itAsteroid, **itAsteroidTwo))
 				{
+					(*itAsteroid)->_shape.setOutlineColor(ASTEROID_COLLISION_COLOR);
+					(*itAsteroidTwo)->_shape.setOutlineColor(ASTEROID_COLLISION_COLOR);
 					this->_nCollisionsThisFrame++;
 				}
 			}
@@ -424,6 +426,7 @@ void Game::CheckCollision(WireframeSprite* spriteA, std::vector<WireframeSprite*
 					pSpriteB = spriteA;
 				}
 
+				// Get the names of the derived class so specific action can be performed on specific collision types
 				const char* spriteAtype = typeid(*pSpriteA).name();
 				const char* spriteBtype = typeid(*pSpriteB).name();
 
@@ -451,7 +454,16 @@ void Game::CheckCollision(WireframeSprite* spriteA, std::vector<WireframeSprite*
 						asteroidsToBeSplit.push_back(index);
 					}
 
-				// Implement asteroid collision
+				// Test for asteroid against asteroid collision
+				// Only need to test once as both objects are the same type so either way round will trigger the method
+				if (this->_collideAsteroids && l == 0)
+				{
+					if (strcmp(spriteAtype, "class Asteroid") == 0 && std::strcmp(spriteBtype, "class Asteroid") == 0)
+					{
+						pSpriteA->_shape.setOutlineColor(ASTEROID_COLLISION_COLOR);
+						pSpriteB->_shape.setOutlineColor(ASTEROID_COLLISION_COLOR);
+					}
+				}
 			}
 		}
 	}
