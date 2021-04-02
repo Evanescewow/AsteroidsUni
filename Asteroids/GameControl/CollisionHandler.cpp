@@ -49,8 +49,8 @@ CollisionPhaseData CollisionHandler::HandleCollision()
 		this->HandleBroadPhaseBruteForce(narrowCollisionMode, isPlayerColliding);
 		break;
 	case BroadCollisionMode::UNIFORM_GRID:
-		break;
 		this->HandleBroadPhaseUniformGrid(narrowCollisionMode, isPlayerColliding);
+		break;
 	default:
 		throw std::exception("unknown broad phase collision detected!");
 	}

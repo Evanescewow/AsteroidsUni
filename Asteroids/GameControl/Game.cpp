@@ -2,6 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
+#include <iostream>
 
 Game::Game(sf::RenderWindow* window)
 	:
@@ -26,10 +27,17 @@ Game::Game(sf::RenderWindow* window)
 
 	// Create collision handler
 	this->_collisionHandler = new CollisionHandler(*_grid, _asteroids, _bullets, *_player);
+
+	// Create console
+	this->_console = new Console();
 }
 
 Game::~Game()
 {
+	// Cleanup console
+	if (this->_console)
+		delete this->_console;
+
 	// Cleanup grid
 	if (this->_grid)
 		delete this->_grid;
@@ -84,6 +92,11 @@ void Game::ComposeFrame()
 	{
 		(*it)->Draw(_window);
 	}
+
+
+	// Draw the console if it's open
+	if (this->_console->IsOpen())
+		this->_console->Draw(_window);
 }
 
 /*void UpdateModel
@@ -96,6 +109,15 @@ void Game::UpdateModel()
 {
 	// Handle input (for the firing of bullets
 	this->HandleInput();
+
+
+	// If console is open pause the rest of the operations
+	if (this->_console->IsOpen())
+	{
+		Console::ParsedCommandData data = this->_console->Update(this->_window);
+		this->HandleConsoleCommands(data);
+		return;
+	}
 
 	// Update Player
 	_player->Update();
@@ -115,6 +137,8 @@ void Game::UpdateModel()
 		this->_player->SetColour(sf::Color::Yellow);
 	else
 		this->_player->SetColour(sf::Color::Cyan);
+
+	std::cout << data.nCollisionTests << std::endl;
 
 	// cleanup any bullets marked invisible
 	this->CleanupBullets();
@@ -246,6 +270,7 @@ for (int i = 0; i < this->_bullets.size(); i++)
 */
 void Game::HandleInput()
 {
+	// Limit key spam
 	if (_lastInputClock.getElapsedTime().asSeconds() >= SHOOT_INTERVAL)
 	{
 		_lastInputClock.restart();
@@ -255,25 +280,20 @@ void Game::HandleInput()
 		return;
 	}
 
-	// Input for firing bullets 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	// Only allow regular keys when console is closed
+	if (!this->_console->IsOpen())
 	{
-		this->_bullets.push_back(new Bullet(this->_player->GetPosition(), this->_player->GetRotation()));
-		_grid->AddObject(this->_bullets.back());
+		// Input for firing bullets 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			this->_bullets.push_back(new Bullet(this->_player->GetPosition(), this->_player->GetRotation()));
+			_grid->AddObject(this->_bullets.back());
+		}
 	}
 
-	// Input for toggling god mode
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
-		this->_collidePlayer = !this->_collidePlayer;
-
-	// Input for toggling asteroid collisions
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
-		this->_collideAsteroids = !this->_collideAsteroids;
-
-	// Input for toggling broad phase collision mode
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-	{
-	}
+	// Check for console toggle
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+		this->_console->Toggle();
 }
 
 void Game::UpdateSpriteGrid(WireframeSprite* sprite)
@@ -285,5 +305,22 @@ void Game::UpdateSpriteGrid(WireframeSprite* sprite)
 		// update owner cell
 		this->_grid->RemoveObject(sprite);
 		_grid->AddObject(sprite, newCell);
+	}
+}
+
+void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
+{
+	switch (data.commandType)
+	{
+	case (Console::CommandType::TOGGLE_PLAYER_COLLISION):
+		this->_collisionHandler->TogglePlayerCollision();
+		break;
+
+	case (Console::CommandType::INVALID_COMMAND):
+		break;
+
+	//default:
+		//throw std::exception("Error processing console command.");
+		//break;
 	}
 }

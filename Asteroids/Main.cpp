@@ -14,7 +14,6 @@ int main(void)
 	sf::Clock clock;
 	sf::Time time;
 
-
 	Game theGame(&window);
 
 	while (window.isOpen())
@@ -29,7 +28,6 @@ int main(void)
 		// reset fps clock
 		clock.restart().asSeconds();
 
-
 		//handle closed event
 		sf::Event evt;
 		if (window.pollEvent(evt))
@@ -40,7 +38,7 @@ int main(void)
 				return EXIT_SUCCESS;
 			}
 		}
-
+		
 		// Run the game
 		theGame.Go();
 	}

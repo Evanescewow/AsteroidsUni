@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "../GameObjects/Player.h"
 #include "../GameObjects/Asteroid.h"
+#include "Console.h"
 #include "CollisionHandler.h"
 #include "UniformGrid.h"
 #include <functional>
@@ -13,6 +14,7 @@ class Game
 public:
 	// Sets up the player, grid and asteroid objects. seeds the random function and 
 	// assigns _renderWindow to the target render device passed to it.
+	// takes event reference to hand off to the console class
 	Game(sf::RenderWindow* window);
 	~Game();
 
@@ -80,6 +82,8 @@ private:
 
 	void UpdateSpriteGrid(WireframeSprite*);
 
+	void HandleConsoleCommands(Console::ParsedCommandData& data);
+
 private:
 	sf::RenderWindow* _window = nullptr;
 
@@ -90,13 +94,10 @@ private:
 	std::vector<Bullet*> _bullets;					// container for the bullet objects
 	size_t NUMBER_ASTEROIDS = 5;					// Number of asteroids on the screen
 
-	bool _collidePlayer = true;						// Should tests for collision with the player be performed (godmode)
-	bool _collideAsteroids = true;					// Should collision between asteroids be performed
-	bool _collideBullets = true;					// should the bullets collide with the asteroids
-
 	sf::Clock _lastInputClock;						// Timer to limit spam of bullet firing			
 	UniformGrid* _grid = nullptr;					// Grid for uniform spatial partitioning
 	CollisionHandler* _collisionHandler = nullptr;	// Handles all application collision logic
+	Console* _console = nullptr;
 
 	// Constants
 	static constexpr float SHOOT_INTERVAL = 0.2f;	// interval in seconds between each bullet firing

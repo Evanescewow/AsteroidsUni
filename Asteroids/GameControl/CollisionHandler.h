@@ -39,6 +39,11 @@ public:
 
 	CollisionPhaseData HandleCollision();
 
+	void TogglePlayerCollision() { this->_collidePlayer = !this->_collidePlayer; }
+	void ToggleBulletCollision() { this->_collideBullets = !this->_collideBullets; }
+	void ToggleAsteroidCollision() { this->_collideAsteroids = !this->_collideAsteroids; }
+
+
 	// private methods
 private:
 	void HandleBroadPhaseBruteForce(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, bool& isPlayerColliding);
@@ -54,7 +59,7 @@ private:
 	// private members
 private:
 	// Collision mode options
-	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::BRUTE_FORCE;				// type of broad phase collision to be used
+	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::UNIFORM_GRID;				// type of broad phase collision to be used
 	NarrowCollisionMode _narrowCollisionMode = NarrowCollisionMode::SEPERATED_AXIS_THEOREM;	// Type of narrow phase collision to be used
 
 	// Collision performance options
