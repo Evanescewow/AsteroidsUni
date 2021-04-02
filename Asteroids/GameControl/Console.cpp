@@ -155,7 +155,65 @@ void Console::PushBackMesage(std::string& text, sf::Color textColour)
 
 Console::ParsedCommandData Console::ParseSet(std::deque<std::string>& parameters)
 {
-	return ParsedCommandData();
+	ParsedCommandData output;
+	std::string outputMessage;
+
+	sf::Color outputMessageColor = COMMAND_SUCCESS_COLOUR;
+
+	// Check number of parameters matches expected
+	if (parameters.size() != 2)
+	{
+		output.commandType = CommandType::INVALID_COMMAND;
+		outputMessage = "Incorrect number of parameters given.";
+		outputMessageColor = ERROR_COLOUR;
+	}
+
+
+	// Set command for broad phase collision
+	else if (parameters[0] == "col-broad")
+	{
+		outputMessage = "broad phase collision set to ";
+
+		// set broad phase to brute force
+		if (parameters[1] == "bruteforce")
+		{
+			output.commandType = CommandType::SET_BROAD_COLLISION_BRUTE_FORCE;
+			outputMessage += "brute force.";
+		}
+
+		// set broad phase to uniform grid
+		else if (parameters[1] == "uniformgrid")
+		{
+			output.commandType = CommandType::SET_BROAD_COLLISION_UNIFORM_GRID;
+			outputMessage += "uniform grid.";
+		}
+
+		// invalid mode type given
+		else
+		{
+			output.commandType = CommandType::INVALID_COMMAND;
+			outputMessage = "Invalid broad phase collision mode given.";
+			outputMessageColor = ERROR_COLOUR;
+		}
+	}
+
+	// set command for narrow phase collision
+	else if (parameters[0] == "col-narrow")
+	{
+
+	}
+
+	// Invalid set parameter
+	else
+	{
+		output.commandType = CommandType::INVALID_COMMAND;
+		outputMessage = parameters[0] + " is not a valid set parameter.";
+		outputMessageColor = ERROR_COLOUR;
+	}
+
+	// print output and return result
+	this->PushBackMesage(outputMessage, outputMessageColor);
+	return output;
 }
 
 Console::ParsedCommandData Console::ParseToggle(std::deque<std::string>& parameters)

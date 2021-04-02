@@ -43,6 +43,8 @@ public:
 	void ToggleBulletCollision() { this->_collideBullets = !this->_collideBullets; }
 	void ToggleAsteroidCollision() { this->_collideAsteroids = !this->_collideAsteroids; }
 
+	void SetBroadCollisionMode(BroadCollisionMode mode) { _broardCollisionMode = mode; }
+	void SetNarrowCollisionMode(NarrowCollisionMode mode) { _narrowCollisionMode = mode; }
 
 	// private methods
 private:
