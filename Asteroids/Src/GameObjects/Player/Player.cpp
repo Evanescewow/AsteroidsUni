@@ -2,7 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <MAth.h>
 #include <iostream>
-#include "../Global/ApplicationDefines.h"
+#include "../../Global/ApplicationDefines.h"
 
 Player::Player()
 	:

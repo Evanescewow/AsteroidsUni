@@ -15,60 +15,60 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameControl\Game.cpp">
+    <ClCompile Include="Src\GameControl\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\WireframeSprite.cpp">
+    <ClCompile Include="Src\GameObjects\Base\WireframeSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Player.cpp">
+    <ClCompile Include="Src\GameObjects\Player\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Asteroid.cpp">
+    <ClCompile Include="Src\GameObjects\Other\Asteroid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjects\Bullet.cpp">
+    <ClCompile Include="Src\GameObjects\Other\Bullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameControl\UniformGrid.cpp">
+    <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameControl\CollisionHandler.cpp">
+    <ClCompile Include="Src\GameControl\Backend\CollisionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameControl\Console.cpp">
+    <ClCompile Include="Src\GameControl\Common\Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Global\ApplicationDefines.h">
+    <ClInclude Include="Src\Global\ApplicationDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameControl\Game.h">
+    <ClInclude Include="Src\GameControl\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\WireframeSprite.h">
+    <ClInclude Include="Src\GameObjects\Base\WireframeSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Player.h">
+    <ClInclude Include="Src\GameObjects\Player\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Asteroid.h">
+    <ClInclude Include="Src\GameObjects\Other\Asteroid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjects\Bullet.h">
+    <ClInclude Include="Src\GameObjects\Other\Bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameControl\UniformGrid.h">
+    <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameControl\CollisionHandler.h">
+    <ClInclude Include="Src\GameControl\Backend\CollisionHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameControl\Console.h">
+    <ClInclude Include="Src\GameControl\Common\Console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

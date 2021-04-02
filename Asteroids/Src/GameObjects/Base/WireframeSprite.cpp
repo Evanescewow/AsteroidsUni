@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 #include "WireframeSprite.h"
-#include "../Global/ApplicationDefines.h"
+#include "../../Global/ApplicationDefines.h"
 #include <math.h>
 
 WireframeSprite::WireframeSprite(size_t pointCount)

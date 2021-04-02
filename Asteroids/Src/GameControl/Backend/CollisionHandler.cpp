@@ -1,9 +1,9 @@
 #include "CollisionHandler.h"
-#include "../GameObjects/WireframeSprite.h"
-#include "../GameObjects/Player.h"
-#include "../GameObjects/Asteroid.h"
-#include "../GameObjects/Bullet.h"
-#include "UniformGrid.h"
+#include "../../GameObjects/Base/WireframeSprite.h"
+#include "../../GameObjects/Player/Player.h"
+#include "../../GameObjects/Other/Asteroid.h"
+#include "../../GameObjects/Other/Bullet.h"
+#include "SpatialPartitioning/UniformGrid.h"
 
 CollisionHandler::CollisionHandler(UniformGrid& grid, std::vector<Asteroid*>& asteroidContainer, std::vector<Bullet*>& bulletContainer, Player& player)
 	:	// Assign references to game objects

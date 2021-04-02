@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "../GameObjects/WireframeSprite.h"
+#include "../../../GameObjects/Base/WireframeSprite.h"
 
 class CollisionHandler;
 

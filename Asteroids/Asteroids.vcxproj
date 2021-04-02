@@ -19,26 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameControl\Console.cpp" />
-    <ClCompile Include="GameControl\CollisionHandler.cpp" />
-    <ClCompile Include="GameObjects\Bullet.cpp" />
-    <ClCompile Include="GameObjects\Asteroid.cpp" />
-    <ClCompile Include="GameControl\Game.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="GameObjects\WireframeSprite.cpp" />
-    <ClCompile Include="GameObjects\Player.cpp" />
-    <ClCompile Include="GameControl\UniformGrid.cpp" />
+    <ClCompile Include="Src\GameControl\Common\Console.cpp" />
+    <ClCompile Include="Src\GameControl\Backend\CollisionHandler.cpp" />
+    <ClCompile Include="Src\GameObjects\Other\Bullet.cpp" />
+    <ClCompile Include="Src\GameObjects\Other\Asteroid.cpp" />
+    <ClCompile Include="Src\GameControl\Game.cpp" />
+    <ClCompile Include="Src\Main.cpp" />
+    <ClCompile Include="Src\GameObjects\Base\WireframeSprite.cpp" />
+    <ClCompile Include="Src\GameObjects\Player\Player.cpp" />
+    <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameControl\Console.h" />
-    <ClInclude Include="GameControl\CollisionHandler.h" />
-    <ClInclude Include="GameObjects\Bullet.h" />
-    <ClInclude Include="GameObjects\Asteroid.h" />
-    <ClInclude Include="GameControl\Game.h" />
-    <ClInclude Include="Global\ApplicationDefines.h" />
-    <ClInclude Include="GameObjects\WireframeSprite.h" />
-    <ClInclude Include="GameObjects\Player.h" />
-    <ClInclude Include="GameControl\UniformGrid.h" />
+    <ClInclude Include="Src\GameControl\Common\Console.h" />
+    <ClInclude Include="Src\GameControl\Backend\CollisionHandler.h" />
+    <ClInclude Include="Src\GameObjects\Other\Bullet.h" />
+    <ClInclude Include="Src\GameObjects\Other\Asteroid.h" />
+    <ClInclude Include="Src\GameControl\Game.h" />
+    <ClInclude Include="Src\Global\ApplicationDefines.h" />
+    <ClInclude Include="Src\GameObjects\Base\WireframeSprite.h" />
+    <ClInclude Include="Src\GameObjects\Player\Player.h" />
+    <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

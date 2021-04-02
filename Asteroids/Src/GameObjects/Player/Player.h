@@ -1,6 +1,6 @@
 #pragma once
-#include "WireframeSprite.h"
-#include "Bullet.h"
+#include "../Base/WireframeSprite.h"
+#include "../Other/Bullet.h"
 
 class Player :
 	public WireframeSprite

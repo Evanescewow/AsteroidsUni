@@ -1,7 +1,7 @@
 #include "Bullet.h"
 #define _USE_MATH_DEFINES
 #include <MAth.h>
-#include "../Global/ApplicationDefines.h"
+#include "../../Global/ApplicationDefines.h"
 
 Bullet::Bullet(sf::Vector2f playerPosition, float playerRotation)
 	:

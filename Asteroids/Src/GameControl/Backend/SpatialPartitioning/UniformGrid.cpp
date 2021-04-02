@@ -1,5 +1,5 @@
 #include "UniformGrid.h"
-#include "../Global/ApplicationDefines.h"
+#include "../../../Global/ApplicationDefines.h"
 
 UniformGrid::UniformGrid()
 {

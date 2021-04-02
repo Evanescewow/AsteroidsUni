@@ -1,5 +1,5 @@
 #pragma once
-#include "WireframeSprite.h"
+#include "../Base/WireframeSprite.h"
 
 class Asteroid :
 	public WireframeSprite

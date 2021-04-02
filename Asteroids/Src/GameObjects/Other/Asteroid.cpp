@@ -1,8 +1,8 @@
 #define _USE_MATH_DEFINES
 #include <MAth.h>
 #include "Asteroid.h"
-#include "../Global/ApplicationDefines.h"
-#include "../GameControl/UniformGrid.h"
+#include "../../Global/ApplicationDefines.h"
+#include "../../GameControl/Backend/SpatialPartitioning/UniformGrid.h"
 #include <ctime>
 
 // Contains the different radius sizes
