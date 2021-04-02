@@ -8,7 +8,9 @@ public:
 	enum class CommandType
 	{
 		INVALID_COMMAND,
-		TOGGLE_PLAYER_COLLISION
+		TOGGLE_PLAYER_COLLISION,
+		TOGGLE_ASTEROID_COLLISION,
+		TOGGLE_BULLET_COLLISION
 	};
 
 	struct ParsedCommandData

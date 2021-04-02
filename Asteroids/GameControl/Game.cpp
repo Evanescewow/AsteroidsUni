@@ -312,8 +312,20 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 {
 	switch (data.commandType)
 	{
+
+		// Toggle player Collision
 	case (Console::CommandType::TOGGLE_PLAYER_COLLISION):
 		this->_collisionHandler->TogglePlayerCollision();
+		break;
+
+		// Toggle Asteroid Collision
+	case (Console::CommandType::TOGGLE_ASTEROID_COLLISION):
+		this->_collisionHandler->ToggleAsteroidCollision();
+		break;
+
+		// Toggle Bullet Collision
+	case (Console::CommandType::TOGGLE_BULLET_COLLISION):
+		this->_collisionHandler->ToggleBulletCollision();
 		break;
 
 	case (Console::CommandType::INVALID_COMMAND):

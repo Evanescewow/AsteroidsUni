@@ -163,11 +163,27 @@ Console::ParsedCommandData Console::ParseToggle(std::deque<std::string>& paramet
 	ParsedCommandData output;
 	std::string outputMessage = "";
 
-	if (parameters[0] == "collideplayer")
+	// Toggle collision for the player
+	if (parameters[0] == "col-player")
 	{
 		output.commandType = CommandType::TOGGLE_PLAYER_COLLISION;
-		outputMessage += "collidePlayer";
+		outputMessage += "Player collision";
 	}
+
+	// toggle collision between asteroids
+	else if (parameters[0] == "col-asteroid")
+	{
+		output.commandType = CommandType::TOGGLE_ASTEROID_COLLISION;
+		outputMessage += "Asteroid collision";
+	}
+
+	// toggle collision for bullets and asteroids
+	else if (parameters[0] == "col-bullet")
+	{
+		output.commandType = CommandType::TOGGLE_BULLET_COLLISION;
+		outputMessage += "Bullet collision";
+	}
+
 
 	// not a valid toggle target, print error return invalid command
 	else
