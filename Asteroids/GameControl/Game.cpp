@@ -327,6 +327,16 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 	case (Console::CommandType::TOGGLE_BULLET_COLLISION):
 		this->_collisionHandler->ToggleBulletCollision();
 		break;
+		
+		// Set col-broad uniformgrid
+	case (Console::CommandType::SET_BROAD_COLLISION_UNIFORM_GRID):
+		this->_collisionHandler->SetBroadCollisionMode(BroadCollisionMode::UNIFORM_GRID);
+		break;
+
+		// Set col-broad bruteforce
+	case (Console::CommandType::SET_BROAD_COLLISION_BRUTE_FORCE):
+		this->_collisionHandler->SetBroadCollisionMode(BroadCollisionMode::BRUTE_FORCE);
+		break;
 
 	case (Console::CommandType::INVALID_COMMAND):
 		break;

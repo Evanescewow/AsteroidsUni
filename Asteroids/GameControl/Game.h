@@ -92,7 +92,7 @@ private:
 	Player* _player = nullptr;						// player triangle object
 	std::vector<Asteroid*> _asteroids;				// container for the asteroids
 	std::vector<Bullet*> _bullets;					// container for the bullet objects
-	size_t NUMBER_ASTEROIDS = 5;					// Number of asteroids on the screen
+	size_t NUMBER_ASTEROIDS = 500;					// Number of asteroids on the screen
 
 	sf::Clock _lastInputClock;						// Timer to limit spam of bullet firing			
 	UniformGrid* _grid = nullptr;					// Grid for uniform spatial partitioning
