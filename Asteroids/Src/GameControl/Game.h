@@ -3,12 +3,13 @@
 #include "../GameObjects/Player/Player.h"
 #include "../GameObjects/Other/Asteroid.h"
 #include "Common/Console.h"
+#include "State.h"
 #include "Backend/CollisionHandler.h"
 #include "Backend/SpatialPartitioning/UniformGrid.h"
 #include <functional>
 #include <vector>
 
-class Game
+class Game : public State
 {
 public:
 	// Sets up the player, grid and asteroid objects. seeds the random function and 
@@ -22,7 +23,7 @@ public:
 	 * Public run function for the game class. Each call to this function
 	 * represents one game frame. This method is called in program entry point.
 	*/
-	void Go();
+	GameState Go();
 
 
 private:

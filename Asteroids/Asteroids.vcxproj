@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Src\GameControl\Common\Console.cpp" />
     <ClCompile Include="Src\GameControl\Backend\CollisionHandler.cpp" />
+    <ClCompile Include="Src\GameControl\GameStateMachine.cpp" />
     <ClCompile Include="Src\GameObjects\Other\Bullet.cpp" />
     <ClCompile Include="Src\GameObjects\Other\Asteroid.cpp" />
     <ClCompile Include="Src\GameControl\Game.cpp" />
@@ -32,6 +33,7 @@
   <ItemGroup>
     <ClInclude Include="Src\GameControl\Common\Console.h" />
     <ClInclude Include="Src\GameControl\Backend\CollisionHandler.h" />
+    <ClInclude Include="Src\GameControl\GameStateMachine.h" />
     <ClInclude Include="Src\GameObjects\Other\Bullet.h" />
     <ClInclude Include="Src\GameObjects\Other\Asteroid.h" />
     <ClInclude Include="Src\GameControl\Game.h" />
@@ -39,6 +41,7 @@
     <ClInclude Include="Src\GameObjects\Base\WireframeSprite.h" />
     <ClInclude Include="Src\GameObjects\Player\Player.h" />
     <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.h" />
+    <ClInclude Include="Src\GameControl\State.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

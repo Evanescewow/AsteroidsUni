@@ -64,12 +64,14 @@ Game::~Game()
  * Public run function for the game class. Each call to this function
  * represents one game frame. This method is called in program entry point.
 */
-void Game::Go()
+GameState Game::Go()
 {
 	this->_window->clear(sf::Color::Black);
 	this->UpdateModel();
 	this->ComposeFrame();
 	this->_window->display();
+
+	return GameState::GAME;
 }
 
 /*void ComposeFrame
@@ -97,6 +99,7 @@ void Game::ComposeFrame()
 	// Draw the console if it's open
 	if (this->_console->IsOpen())
 		this->_console->Draw(_window);
+
 }
 
 /*void UpdateModel
