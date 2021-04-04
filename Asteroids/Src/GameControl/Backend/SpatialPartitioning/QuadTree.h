@@ -21,11 +21,13 @@ public:
 
 	void GetQuadTrees(sf::Vector2f position, std::vector<QuadTree*>& trees);
 
-//	void Query();
+	void Query(sf::FloatRect range, std::vector<WireframeSprite*>& sprites);
 
 private:
 	void SubDivide();
 	bool Contains(sf::Vector2f& position);
+
+	bool Intersects(sf::FloatRect rect);
 
 private:
 	std::vector<WireframeSprite*> _sprites;		// sprites in this current boundary

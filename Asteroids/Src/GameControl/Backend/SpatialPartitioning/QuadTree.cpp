@@ -35,6 +35,16 @@ bool QuadTree::Contains(sf::Vector2f& pos)
 }
 
 
+bool QuadTree::Intersects(sf::FloatRect rect)
+{
+	sf::FloatRect bdry = this->_boundary;
+
+	return !(rect.left > this->_boundary.left + this->_boundary.width ||
+		rect.left + rect.width < this->_boundary.left - this->_boundary.width ||
+		rect.top > this->_boundary.top + this->_boundary.height ||
+		rect.top + rect.height < this->_boundary.top - this->_boundary.height);
+}
+
 void QuadTree::AddObject(WireframeSprite* sprite)
 {
 	std::vector<sf::Vector2f> spritePoints = sprite->GetPoints();
@@ -137,6 +147,32 @@ void QuadTree::GetQuadTrees(sf::Vector2f position, std::vector<QuadTree*>& trees
 		_ne->GetQuadTrees(position, trees);
 		_sw->GetQuadTrees(position, trees);
 		_se->GetQuadTrees(position, trees);
+	}
+}
+
+void QuadTree::Query(sf::FloatRect range, std::vector<WireframeSprite*>& sprites)
+{
+	// if this boundary doesn't intersect the range just return
+	if (!this->Intersects(range))
+		return;
+
+	// if it does add the points from this quadtree that are contained within the range
+	else
+	{
+		for (int i = 0; i < this->_sprites.size(); i++)
+		{
+			if (_sprites[i]->GetBoundingRectangle().intersects(range))
+				sprites.push_back(_sprites[i]);
+		}
+	}
+
+
+	if (this->_isDivided)
+	{
+		this->_nw->Query(range, sprites);
+		this->_ne->Query(range, sprites);
+		this->_sw->Query(range, sprites);
+		this->_se->Query(range, sprites);
 	}
 }
 

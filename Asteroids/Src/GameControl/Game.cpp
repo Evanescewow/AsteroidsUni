@@ -31,7 +31,7 @@ Game::Game(sf::RenderWindow* window)
 	}
 
 	// Create collision handler
-	this->_collisionHandler = new CollisionHandler(*_grid, _asteroids, _bullets, *_player, *_quadTree);
+	this->_collisionHandler = new CollisionHandler(*_grid, _asteroids, _bullets, *_player, _quadTree);
 
 	// Create console
 	this->_console = new Console();
@@ -146,6 +146,9 @@ void Game::UpdateModel()
 	// Update Bullets
 	this->UpdateBullets();
 
+	// Check mode to see if should update quadtree
+	this->UpdateQuadTree();
+
 	// Handle all collision logic
 	CollisionPhaseData data = this->_collisionHandler->HandleCollision();
 
@@ -159,9 +162,6 @@ void Game::UpdateModel()
 
 	// cleanup any bullets marked invisible
 	this->CleanupBullets();
-
-	// Check mode to see if should update quadtree
-	this->UpdateQuadTree();
 }
 
 /*void UpdateAsteroids
@@ -246,6 +246,10 @@ void Game::SplitAsteroid(unsigned int asteroidIndex)
 		// Add the new asteroids to their correct cells
 		this->_grid->AddObject(_asteroids[_asteroids.size()- 1]);
 		this->_grid->AddObject(_asteroids[_asteroids.size() - 2]);
+
+		// Add the objects to their correct quadtree
+		this->_quadTree->AddObject(_asteroids[_asteroids.size() - 1]);
+		this->_quadTree->AddObject(_asteroids[_asteroids.size() - 2]);
 	}
 
 	// clean up old asteroid
@@ -275,6 +279,7 @@ for (int i = 0; i < this->_bullets.size(); i++)
 	{
 		// Remove bullet from grid system
 		this->_grid->RemoveObject(this->_bullets[i]);
+		this->_quadTree->RemoveObject(this->_bullets[i]);
 
 		// Delete bullet and remove entry from vector
 		delete this->_bullets[i];
@@ -308,6 +313,7 @@ void Game::HandleInput()
 		{
 			this->_bullets.push_back(new Bullet(this->_player->GetPosition(), this->_player->GetRotation()));
 			_grid->AddObject(this->_bullets.back());
+			_quadTree->AddObject(this->_bullets.back());
 		}
 	}
 
@@ -342,10 +348,17 @@ void Game::UpdateQuadTree()
 	// Delete the old tree
 	delete this->_quadTree;
 
-	// create a new one
+	// create a new one and update reference in collision handler
 	this->_quadTree = new QuadTree(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 4);
+	this->_collisionHandler->UpdateQuadTree(_quadTree);
 	this->_quadTree->AddObject(_player);
+
 	for (auto it = this->_asteroids.begin(); it != this->_asteroids.end(); it++)
+	{
+		this->_quadTree->AddObject(*it);
+	}
+
+	for (auto it = this->_bullets.begin(); it != this->_bullets.end(); it++)
 	{
 		this->_quadTree->AddObject(*it);
 	}

@@ -36,7 +36,7 @@ class CollisionHandler
 	// public methods
 public:
 	CollisionHandler(UniformGrid& grid, std::vector<Asteroid*>& asteroidContainer, std::vector<Bullet*>& bulletContainer,
-		Player& player, QuadTree& quadtree);
+		Player& player, QuadTree* quadtree);
 	~CollisionHandler();
 
 	CollisionPhaseData HandleCollision();
@@ -47,6 +47,8 @@ public:
 
 	void SetBroadCollisionMode(BroadCollisionMode mode) { _broardCollisionMode = mode; }
 	void SetNarrowCollisionMode(NarrowCollisionMode mode) { _narrowCollisionMode = mode; }
+
+	void UpdateQuadTree(QuadTree* qt) { this->_quadTree = qt; }
 
 	BroadCollisionMode GetBroadCollisionMode() const { return this->_broardCollisionMode; }
 
@@ -66,7 +68,7 @@ private:
 	// private members
 private:
 	// Collision mode options
-	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::UNIFORM_GRID;				// type of broad phase collision to be used
+	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::QUADTREE;				// type of broad phase collision to be used
 	NarrowCollisionMode _narrowCollisionMode = NarrowCollisionMode::SEPERATED_AXIS_THEOREM;	// Type of narrow phase collision to be used
 
 	// Collision performance options
@@ -82,7 +84,7 @@ private:
 	std::vector<Asteroid*>& _asteroids;				// references to all the asteroids in the game
 	std::vector<Bullet*>& _bullets;					// reference to all the bullets in the game
 	UniformGrid& _grid;
-	QuadTree& _quadTree;
+	QuadTree* _quadTree;
 	Player& _player;								// reference to the player object
 
 	// constants

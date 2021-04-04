@@ -5,8 +5,9 @@
 #include "../../GameObjects/Other/Bullet.h"
 #include "SpatialPartitioning/QuadTree.h"
 #include "SpatialPartitioning/UniformGrid.h"
+#include "../../Global/ApplicationDefines.h"
 
-CollisionHandler::CollisionHandler(UniformGrid& grid, std::vector<Asteroid*>& asteroidContainer, std::vector<Bullet*>& bulletContainer, Player& player, QuadTree& quadtree)
+CollisionHandler::CollisionHandler(UniformGrid& grid, std::vector<Asteroid*>& asteroidContainer, std::vector<Bullet*>& bulletContainer, Player& player, QuadTree* quadtree)
 	:	// Assign references to game objects
 	_grid(grid),
 	_asteroids(asteroidContainer),
@@ -52,6 +53,10 @@ CollisionPhaseData CollisionHandler::HandleCollision()
 		break;
 	case BroadCollisionMode::UNIFORM_GRID:
 		this->HandleBroadPhaseUniformGrid(narrowCollisionMode, isPlayerColliding);
+		break;
+
+	case BroadCollisionMode::QUADTREE:
+		this->HandleBroadPhaseQuadtree(narrowCollisionMode, isPlayerColliding);
 		break;
 	default:
 		throw std::exception("unknown broad phase collision detected!");
@@ -155,12 +160,28 @@ void CollisionHandler::HandleBroadPhaseUniformGrid(std::function<bool(WireframeS
 
 void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, bool& isPlayerColliding)
 {
-	QuadTree* iter = &_quadTree;
+	std::vector<WireframeSprite*> others;
 
-	while (iter->_isDivided)
+	// player collision
+	this->_quadTree->Query(this->_player.GetBoundingRectangle(), others);	
+	this->CheckCollision(collisionAlgorithm, &this->_player, others, 0, isPlayerColliding);
+
+	// Asteroid collision
+	for (int i = 0; i < this->_asteroids.size(); i++)
 	{
-
+		// find any possible collisions with the asteroid
+		this->_quadTree->Query(this->_asteroids[i]->GetBoundingRectangle(), others);
+		this->CheckCollision(collisionAlgorithm, this->_asteroids[i], others, i+1, isPlayerColliding);
 	}
+
+	// Bullet collision
+	for (int i = 0; i < this->_bullets.size(); i++)
+	{
+		// find any possible collisions with the asteroid
+		this->_quadTree->Query(this->_bullets[i]->GetBoundingRectangle(), others);
+		this->CheckCollision(collisionAlgorithm, this->_bullets[i], others, i + 1, isPlayerColliding);
+	}
+
 }
 
 void CollisionHandler::CheckCollision(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm,
@@ -171,6 +192,11 @@ void CollisionHandler::CheckCollision(std::function<bool(WireframeSprite&, Wiref
 
 	for (unsigned int i = startingIndex; i < spritesToCheck.size(); i++)
 	{
+
+		// no point checking collision against yourself
+		if (spritesToCheck[i] == spriteA)
+			continue;
+
 		// test being performed, increase number for data collection
 		this->_nCollisionTestsThisFrame++;
 		if (collisionAlgorithm(*spriteA, *spritesToCheck[i]))
