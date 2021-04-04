@@ -6,6 +6,8 @@
 #include "State.h"
 #include "Backend/CollisionHandler.h"
 #include "Backend/SpatialPartitioning/UniformGrid.h"
+#include "Backend/SpatialPartitioning/QuadTree.h"
+#include "../Global/ApplicationDefines.h"
 #include <functional>
 #include <vector>
 
@@ -92,10 +94,11 @@ private:
 	Player* _player = nullptr;						// player triangle object
 	std::vector<Asteroid*> _asteroids;				// container for the asteroids
 	std::vector<Bullet*> _bullets;					// container for the bullet objects
-	size_t NUMBER_ASTEROIDS = 5;					// Number of asteroids on the screen
+	size_t NUMBER_ASTEROIDS = 10;					// Number of asteroids on the screen
 
 	sf::Clock _lastInputClock;						// Timer to limit spam of bullet firing			
 	UniformGrid* _grid = nullptr;					// Grid for uniform spatial partitioning
+	QuadTree* _quadTree = nullptr;
 	CollisionHandler* _collisionHandler = nullptr;	// Handles all application collision logic
 	Console* _console = nullptr;
 

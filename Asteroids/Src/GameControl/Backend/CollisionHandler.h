@@ -9,7 +9,7 @@ class Asteroid;
 class Bullet;
 class Player;
 class UniformGrid;
-
+class QuadTree;
 
 struct CollisionPhaseData
 {
@@ -27,14 +27,16 @@ enum class NarrowCollisionMode
 enum class BroadCollisionMode
 {
 	BRUTE_FORCE,
-	UNIFORM_GRID
+	UNIFORM_GRID,
+	QUADTREE
 };
 
 class CollisionHandler
 {
 	// public methods
 public:
-	CollisionHandler(UniformGrid& grid, std::vector<Asteroid*>& asteroidContainer, std::vector<Bullet*>& bulletContainer, Player& player);
+	CollisionHandler(UniformGrid& grid, std::vector<Asteroid*>& asteroidContainer, std::vector<Bullet*>& bulletContainer,
+		Player& player, QuadTree& quadtree);
 	~CollisionHandler();
 
 	CollisionPhaseData HandleCollision();
@@ -50,6 +52,7 @@ public:
 private:
 	void HandleBroadPhaseBruteForce(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, bool& isPlayerColliding);
 	void HandleBroadPhaseUniformGrid(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, bool& isPlayerColliding);
+	void HandleBroadPhaseQuadtree(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, bool& isPlayerColliding);
 
 	void CheckCollision(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm,
 		WireframeSprite* spriteA, std::vector<WireframeSprite*>& spritesToCheck, unsigned int startingIndex, bool& isPlayerColliding);
@@ -77,6 +80,7 @@ private:
 	std::vector<Asteroid*>& _asteroids;				// references to all the asteroids in the game
 	std::vector<Bullet*>& _bullets;					// reference to all the bullets in the game
 	UniformGrid& _grid;
+	QuadTree& _quadTree;
 	Player& _player;								// reference to the player object
 
 	// constants

@@ -2,6 +2,7 @@
 #include <SFML/graphics.hpp>
 struct Cell;
 class Game;
+class QuadTree;
 
 
 class WireframeSprite
@@ -24,10 +25,12 @@ public:
 
 	Cell* GetOwnerCell() const { return this->_ownerCell; }
 	int GetOwnerCellIndex() const {return this->_ownerCellIndex;}
+	QuadTree* GetOwnerTree() const { return this->_ownerTree; }
 
 	sf::FloatRect GetBoundingRectangle() const { return this->_shape.getGlobalBounds(); }
 
 
+	void SetOwnerTree(QuadTree* tree) { this->_ownerTree = tree; }
 	void SetOwnerCell(Cell* cell) { this->_ownerCell = cell; }
 	void SetOwnerCellIndex(int index) { this->_ownerCellIndex = index; }
 
@@ -50,5 +53,7 @@ private:
 
 	int _ownerCellIndex = -1;
 	Cell* _ownerCell = nullptr;
+
+	QuadTree* _ownerTree = nullptr;
 };
 

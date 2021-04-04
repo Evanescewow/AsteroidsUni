@@ -74,7 +74,7 @@ private:
 	sf::Color ASTEROID_COLOR = sf::Color::Red;			// color of the asteroid
 	static constexpr float ASTEROID_THICKNESS = 1;		// Thickness of the asteroid outline
 	static constexpr double MINIMUM_VERT_ANGLE = 0.1;	// Minimum angle between verticies (radians)
-	static constexpr float MAXIMUM_SPEED = 2.0f;		// Maximum spawn speed		// Minimum spawn speed
+	static constexpr float MAXIMUM_SPEED = 0.0f;		// Maximum spawn speed		// Minimum spawn speed
 
 	bool _shouldBeSplitNextFrame = false;				// is the asteroid marked to be split
 	unsigned int _indexInGameObjectArray = 0;			// Stores the index of itself within the game array

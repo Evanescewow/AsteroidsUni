@@ -3,14 +3,16 @@
 #include "../../GameObjects/Player/Player.h"
 #include "../../GameObjects/Other/Asteroid.h"
 #include "../../GameObjects/Other/Bullet.h"
+#include "SpatialPartitioning/QuadTree.h"
 #include "SpatialPartitioning/UniformGrid.h"
 
-CollisionHandler::CollisionHandler(UniformGrid& grid, std::vector<Asteroid*>& asteroidContainer, std::vector<Bullet*>& bulletContainer, Player& player)
+CollisionHandler::CollisionHandler(UniformGrid& grid, std::vector<Asteroid*>& asteroidContainer, std::vector<Bullet*>& bulletContainer, Player& player, QuadTree& quadtree)
 	:	// Assign references to game objects
 	_grid(grid),
 	_asteroids(asteroidContainer),
 	_bullets(bulletContainer),
-	_player(player){}
+	_player(player),
+	_quadTree(quadtree){}
 
 CollisionHandler::~CollisionHandler(){}
 
@@ -148,6 +150,16 @@ void CollisionHandler::HandleBroadPhaseUniformGrid(std::function<bool(WireframeS
 				CheckCollision(collisionAlgorithm, sprite, _grid.GetCell(x, y - 1)._objects, 0, isPlayerColliding);
 			}
 		}
+	}
+}
+
+void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, bool& isPlayerColliding)
+{
+	QuadTree* iter = &_quadTree;
+
+	while (iter->_isDivided)
+	{
+
 	}
 }
 

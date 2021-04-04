@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\QuadTree.cpp" />
     <ClCompile Include="Src\GameControl\Common\Console.cpp" />
     <ClCompile Include="Src\GameControl\Backend\CollisionHandler.cpp" />
     <ClCompile Include="Src\GameControl\GameStateMachine.cpp" />
@@ -31,6 +32,7 @@
     <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\QuadTree.h" />
     <ClInclude Include="Src\GameControl\Common\Console.h" />
     <ClInclude Include="Src\GameControl\Backend\CollisionHandler.h" />
     <ClInclude Include="Src\GameControl\GameStateMachine.h" />

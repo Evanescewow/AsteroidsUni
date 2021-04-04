@@ -14,19 +14,24 @@ Game::Game(sf::RenderWindow* window)
 	// Create uniform grid
 	this->_grid = new UniformGrid();
 
+	// Create uniform grid
+	this->_quadTree = new QuadTree(sf::FloatRect(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, WINDOW_WIDTH/2, WINDOW_HEIGHT/2), 4);
+
 	// Generate player
 	this->_player = new Player;
 	_grid->AddObject(this->_player);
+	_quadTree->AddObject(this->_player);
 
 	// Generate asteroids
 	for (unsigned int i = 0; i < NUMBER_ASTEROIDS; i++)
 	{
 		this->_asteroids.push_back(new Asteroid(i));
 		_grid->AddObject(_asteroids.back());
+		_quadTree->AddObject(_asteroids.back());
 	}
 
 	// Create collision handler
-	this->_collisionHandler = new CollisionHandler(*_grid, _asteroids, _bullets, *_player);
+	this->_collisionHandler = new CollisionHandler(*_grid, _asteroids, _bullets, *_player, *_quadTree);
 
 	// Create console
 	this->_console = new Console();
@@ -41,6 +46,10 @@ Game::~Game()
 	// Cleanup grid
 	if (this->_grid)
 		delete this->_grid;
+
+	// Cleanup quadtree
+	if (this->_quadTree)
+		delete this->_quadTree;
 
 	// Cleanup collisionHandler
 	if (this->_collisionHandler)
@@ -80,6 +89,10 @@ GameState Game::Go()
 */
 void Game::ComposeFrame()
 {
+	// Draw quadtree
+	this->_quadTree->Draw(_window);
+
+
 	// Draw Player
 	_player->Draw(_window);
 
