@@ -183,6 +183,21 @@ void QuadTree::Query(sf::FloatRect range, std::vector<WireframeSprite*>& sprites
 	}
 }
 
+void QuadTree::Clear()
+{
+	this->_sprites.clear();
+
+	if (this->_isDivided)
+	{
+		delete this->_nw;
+		delete this->_ne;
+		delete this->_sw;
+		delete this->_se;
+
+		this->_isDivided = false;
+	}
+}
+
 void QuadTree::SubDivide()
 {
 	using namespace sf;

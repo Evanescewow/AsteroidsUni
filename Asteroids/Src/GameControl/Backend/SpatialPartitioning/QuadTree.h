@@ -23,6 +23,8 @@ public:
 
 	void Query(sf::FloatRect range, std::vector<WireframeSprite*>& sprites);
 
+	void Clear();
+
 private:
 	void SubDivide();
 	bool Contains(sf::Vector2f& position);

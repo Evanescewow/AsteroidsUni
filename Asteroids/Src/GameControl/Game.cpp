@@ -15,7 +15,7 @@ Game::Game(sf::RenderWindow* window)
 	this->_grid = new UniformGrid();
 
 	// Create uniform grid
-	this->_quadTree = new QuadTree(sf::FloatRect(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, WINDOW_WIDTH/2, WINDOW_HEIGHT/2), 4);
+	this->_quadTree = new QuadTree(sf::FloatRect(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, WINDOW_WIDTH/2, WINDOW_HEIGHT/2), QUADTREE_CELL_LIMIT);
 
 	// Generate player
 	this->_player = new Player;
@@ -347,11 +347,8 @@ void Game::UpdateQuadTree()
 		return;
 
 	// Delete the old tree
-	delete this->_quadTree;
+	this->_quadTree->Clear();
 
-	// create a new one and update reference in collision handler
-	this->_quadTree = new QuadTree(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 4);
-	this->_collisionHandler->UpdateQuadTree(_quadTree);
 	this->_quadTree->AddObject(_player);
 
 	for (auto it = this->_asteroids.begin(); it != this->_asteroids.end(); it++)
