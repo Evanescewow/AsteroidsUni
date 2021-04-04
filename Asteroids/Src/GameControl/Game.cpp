@@ -395,6 +395,11 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 		this->_collisionHandler->SetBroadCollisionMode(BroadCollisionMode::BRUTE_FORCE);
 		break;
 
+		// Set col-broad quadtree
+	case (Console::CommandType::SET_BROAD_COLLISION_QUADTREE):
+		this->_collisionHandler->SetBroadCollisionMode(BroadCollisionMode::QUADTREE);
+		break;
+
 	case (Console::CommandType::INVALID_COMMAND):
 		break;
 

@@ -188,6 +188,13 @@ Console::ParsedCommandData Console::ParseSet(std::deque<std::string>& parameters
 			outputMessage += "uniform grid.";
 		}
 
+		// set broad phase to quadtree
+		else if (parameters[1] == "quadtree")
+		{
+			output.commandType = CommandType::SET_BROAD_COLLISION_QUADTREE;
+			outputMessage += "quadtree.";
+		}
+
 		// invalid mode type given
 		else
 		{
