@@ -48,6 +48,8 @@ public:
 	void SetBroadCollisionMode(BroadCollisionMode mode) { _broardCollisionMode = mode; }
 	void SetNarrowCollisionMode(NarrowCollisionMode mode) { _narrowCollisionMode = mode; }
 
+	BroadCollisionMode GetBroadCollisionMode() const { return this->_broardCollisionMode; }
+
 	// private methods
 private:
 	void HandleBroadPhaseBruteForce(std::function<bool(WireframeSprite&, WireframeSprite&)> collisionAlgorithm, bool& isPlayerColliding);

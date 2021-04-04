@@ -1,5 +1,6 @@
 #include "QuadTree.h"
 #include "../../../GameObjects/Base/WireframeSprite.h"
+#include <algorithm>
 
 QuadTree::QuadTree(sf::FloatRect boundary, unsigned int capacity)
 	:
@@ -27,10 +28,10 @@ QuadTree::~QuadTree()
 
 bool QuadTree::Contains(sf::Vector2f& pos)
 {
-	return (pos.x > this->_boundary.left - this->_boundary.width &&
-		pos.x < this->_boundary.left + this->_boundary.width &&
-		pos.y > this->_boundary.top - this->_boundary.height &&
-		pos.y < this->_boundary.top + this->_boundary.height);
+	return (pos.x >= this->_boundary.left - this->_boundary.width &&
+		pos.x <= this->_boundary.left + this->_boundary.width &&
+		pos.y >= this->_boundary.top - this->_boundary.height &&
+		pos.y <= this->_boundary.top + this->_boundary.height);
 }
 
 
@@ -88,36 +89,54 @@ void QuadTree::Draw(sf::RenderWindow* window)
 	}
 }
 
-QuadTree* QuadTree::GetQuadTree(sf::Vector2f position)
+void QuadTree::RemoveObject(WireframeSprite* sprite)
 {
-	// if not within this boundary wrong branch just return nullptr
-	if (!this->Contains(position))
+	// Check that object is within quadtree bounds
+	sf::Vector2f pos = sprite->GetPosition();
+	if (!this->Contains(pos))
+		return;
+
+	// Check if this is the owner tree
+	if (sprite->GetOwnerTree() == this)
 	{
-		return nullptr;
+		// Erase sprite from the container
+		this->_sprites.erase(std::find(this->_sprites.begin(), this->_sprites.end(), sprite));
+		sprite->SetOwnerTree(nullptr);
 	}
 
-	// check in children
-	if (this->_isDivided)
+	// Remove object from children
+	else if (this->_isDivided)
 	{
-		QuadTree* nw = this->_nw->GetQuadTree(position);
-		QuadTree* ne = this->_nw->GetQuadTree(position);
-		QuadTree* sw = this->_nw->GetQuadTree(position);
-		QuadTree* se = this->_nw->GetQuadTree(position);
+		this->_nw->RemoveObject(sprite);
+		this->_ne->RemoveObject(sprite);
+		this->_sw->RemoveObject(sprite);
+		this->_se->RemoveObject(sprite);
+	}
+}
 
-		if (nw)
-			return nw;
-		if (ne)
-			return ne;
-		if (sw)
-			return sw;
-		if (se)
-			return se;
+void QuadTree::GetQuadTrees(sf::Vector2f position, std::vector<QuadTree*>& trees)
+{
+
+	// if points are in within these bounds, add this tree to the list
+	// Dont add to the list if there are no sprites here
+	if (this->Contains(position) && this->_sprites.size() > 0)
+	{
+		trees.push_back(this);
 	}
 
-	// no children and contains point so this must be the correct quadtree
+	// bounds not within this tree, ignore it
 	else
 	{
-		return this;
+		return;
+	}
+
+	// if has children check if point is within their bounds
+	if (this->_isDivided)
+	{
+		_nw->GetQuadTrees(position, trees);
+		_ne->GetQuadTrees(position, trees);
+		_sw->GetQuadTrees(position, trees);
+		_se->GetQuadTrees(position, trees);
 	}
 }
 

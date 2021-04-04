@@ -18,7 +18,8 @@ public:
 
 	void RemoveObject(WireframeSprite* sprite);
 
-	QuadTree* GetQuadTree(sf::Vector2f position);
+
+	void GetQuadTrees(sf::Vector2f position, std::vector<QuadTree*>& trees);
 
 //	void Query();
 

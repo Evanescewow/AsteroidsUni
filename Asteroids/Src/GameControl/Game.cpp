@@ -90,7 +90,8 @@ GameState Game::Go()
 void Game::ComposeFrame()
 {
 	// Draw quadtree
-	this->_quadTree->Draw(_window);
+	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::QUADTREE)
+		this->_quadTree->Draw(_window);
 
 
 	// Draw Player
@@ -158,6 +159,9 @@ void Game::UpdateModel()
 
 	// cleanup any bullets marked invisible
 	this->CleanupBullets();
+
+	// Check mode to see if should update quadtree
+	this->UpdateQuadTree();
 }
 
 /*void UpdateAsteroids
@@ -314,6 +318,11 @@ void Game::HandleInput()
 
 void Game::UpdateSpriteGrid(WireframeSprite* sprite)
 {
+
+	// do nothing if not the right collision mode
+	if (this->_collisionHandler->GetBroadCollisionMode() != BroadCollisionMode::UNIFORM_GRID)
+		return;
+
 	// Check to see if the ball has changed cells
 	Cell* newCell = &_grid->GetCell((sprite)->GetPosition());
 	if (newCell != (sprite)->GetOwnerCell())
@@ -321,6 +330,24 @@ void Game::UpdateSpriteGrid(WireframeSprite* sprite)
 		// update owner cell
 		this->_grid->RemoveObject(sprite);
 		_grid->AddObject(sprite, newCell);
+	}
+}
+
+void Game::UpdateQuadTree()
+{
+	// do nothing if not the right collision mode
+	if (this->_collisionHandler->GetBroadCollisionMode() != BroadCollisionMode::QUADTREE)
+		return;
+
+	// Delete the old tree
+	delete this->_quadTree;
+
+	// create a new one
+	this->_quadTree = new QuadTree(sf::FloatRect(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 4);
+	this->_quadTree->AddObject(_player);
+	for (auto it = this->_asteroids.begin(); it != this->_asteroids.end(); it++)
+	{
+		this->_quadTree->AddObject(*it);
 	}
 }
 
