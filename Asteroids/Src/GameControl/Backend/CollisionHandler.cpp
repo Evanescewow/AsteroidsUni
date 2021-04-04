@@ -165,13 +165,15 @@ void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSpri
 	// player collision
 	this->_quadTree->Query(this->_player.GetBoundingRectangle(), others);	
 	this->CheckCollision(collisionAlgorithm, &this->_player, others, 0, isPlayerColliding);
+	others.clear();
 
 	// Asteroid collision
 	for (int i = 0; i < this->_asteroids.size(); i++)
 	{
 		// find any possible collisions with the asteroid
 		this->_quadTree->Query(this->_asteroids[i]->GetBoundingRectangle(), others);
-		this->CheckCollision(collisionAlgorithm, this->_asteroids[i], others, i+1, isPlayerColliding);
+		this->CheckCollision(collisionAlgorithm, this->_asteroids[i], others, 0, isPlayerColliding);
+		others.clear();
 	}
 
 	// Bullet collision
@@ -179,7 +181,8 @@ void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSpri
 	{
 		// find any possible collisions with the asteroid
 		this->_quadTree->Query(this->_bullets[i]->GetBoundingRectangle(), others);
-		this->CheckCollision(collisionAlgorithm, this->_bullets[i], others, i + 1, isPlayerColliding);
+		this->CheckCollision(collisionAlgorithm, this->_bullets[i], others, 0, isPlayerColliding);
+		others.clear();
 	}
 
 }

@@ -51,6 +51,7 @@ void QuadTree::AddObject(WireframeSprite* sprite)
 
 	bool hasPointInRect = false;
 
+	/*
 	// loop over all points in sprite to check if rects contains points not the entire shape
 	for (int i = 0; i < spritePoints.size(); i++)
 		if (this->Contains(spritePoints[i]))
@@ -64,6 +65,12 @@ void QuadTree::AddObject(WireframeSprite* sprite)
 	{
 		return;
 	}
+
+	*/
+
+	sf::Vector2f pos = sprite->GetPosition();
+	if (!this->Contains(pos))
+		return;
 
 	// node has capacity, just add to sprites
 	if (this->_sprites.size() < this->_capacity)

@@ -149,6 +149,7 @@ void Game::UpdateModel()
 	// Check mode to see if should update quadtree
 	this->UpdateQuadTree();
 
+
 	// Handle all collision logic
 	CollisionPhaseData data = this->_collisionHandler->HandleCollision();
 
