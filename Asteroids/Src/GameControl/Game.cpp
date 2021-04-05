@@ -138,7 +138,9 @@ void Game::UpdateModel()
 
 	// Update Player
 	_player->Update();
-	UpdateSpriteGrid(_player);
+
+	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::UNIFORM_GRID)
+		UpdateSpriteGrid(_player);
 
 	// Update Asteroids
 	this->UpdateAsteroids();
@@ -147,6 +149,7 @@ void Game::UpdateModel()
 	this->UpdateBullets();
 
 	// Check mode to see if should update quadtree
+	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::QUADTREE)
 	this->UpdateQuadTree();
 
 
@@ -191,7 +194,8 @@ void Game::UpdateAsteroids()
 		(*it)->Update(); // Call update on the asteroid
 
 		// Check to see if the ball has changed cells
-		UpdateSpriteGrid(*it);
+		if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::UNIFORM_GRID)
+			UpdateSpriteGrid(*it);
 	}
 }
 
@@ -210,7 +214,8 @@ void Game::UpdateBullets()
 
 
 		// Check to see if the ball has changed cells
-		UpdateSpriteGrid(*it);
+		if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::UNIFORM_GRID)
+			UpdateSpriteGrid(*it);
 	}
 }
 

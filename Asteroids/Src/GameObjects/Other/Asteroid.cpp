@@ -6,7 +6,7 @@
 #include <ctime>
 
 // Contains the different radius sizes
-std::map<Asteroid::Size, int> Asteroid::_radi = { { Asteroid::Size::LARGE, 2 }, { Asteroid::Size::MEDIUM, 32 }, { Asteroid::Size::SMALL, 20 } };
+std::map<Asteroid::Size, int> Asteroid::_radi = { { Asteroid::Size::LARGE, 1 }, { Asteroid::Size::MEDIUM, 32 }, { Asteroid::Size::SMALL, 20 } };
 
 
 /* Constructor

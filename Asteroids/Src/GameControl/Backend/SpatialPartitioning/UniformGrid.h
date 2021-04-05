@@ -82,6 +82,6 @@ private:
 
 
 	// constants
-	static constexpr int _cellSize = 60;	// Size in window pixels of each cell (both x and y)
+	static constexpr int _cellSize = 35;	// Size in window pixels of each cell (both x and y)
 };
 

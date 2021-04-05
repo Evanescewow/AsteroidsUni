@@ -105,6 +105,6 @@ private:
 
 	// Constants
 	static constexpr float SHOOT_INTERVAL = 0.2f;	// interval in seconds between each bullet firing
-	static constexpr int QUADTREE_CELL_LIMIT = 3;
+	static constexpr int QUADTREE_CELL_LIMIT = 5;
 };
 
