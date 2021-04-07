@@ -4,6 +4,14 @@
 
 class CollisionHandler;
 
+struct Line
+{
+	Line(sf::Vertex one, sf::Vertex two)
+		: pointOne(one), pointTwo(two) {}
+	sf::Vertex pointOne;
+	sf::Vertex pointTwo;
+};
+
 /* Struct Cell
  * Holds a container with pointers to all objects within a grid cell
 */
@@ -96,9 +104,9 @@ private:
 	int _numYCells;							// Number of cells in the Y direction
 	std::vector<Cell> _cells;				// Container for all the cells in the grid
 
-	std::vector<sf::Vertex[]> _gridlines;
+	std::vector<Line> _gridlines;
 
 	// constants
-	static constexpr int _cellSize = 35;	// Size in window pixels of each cell (both x and y)
+	static constexpr int _cellSize = 110;	// Size in window pixels of each cell (both x and y)
 };
 

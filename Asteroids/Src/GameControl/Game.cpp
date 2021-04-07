@@ -92,7 +92,8 @@ void Game::ComposeFrame()
 	// Draw quadtree
 	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::QUADTREE)
 		this->_quadTree->Draw(_window);
-
+	else
+		this->_grid->Draw(_window);
 
 	// Draw Player
 	_player->Draw(_window);

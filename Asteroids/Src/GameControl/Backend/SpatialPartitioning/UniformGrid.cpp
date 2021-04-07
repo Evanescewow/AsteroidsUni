@@ -10,6 +10,9 @@ UniformGrid::UniformGrid()
 
 	// Fill the cells container with correct size
 	_cells.resize(_numXCells * _numYCells);
+
+	// build the display grid
+	this->ConstructDisplayLines();
 }
 
 UniformGrid::~UniformGrid()
@@ -152,7 +155,9 @@ void UniformGrid::Draw(sf::RenderWindow* window)
 	// loop through lines
 	for (auto it = this->_gridlines.begin(); it != this->_gridlines.end(); it++)
 	{
-		window->draw(*it, 2, sf::Lines);
+		sf::Vertex line[] = { it->pointOne, it->pointTwo
+		};
+		window->draw(line, 2, sf::Lines);
 	}
 }
 
@@ -168,20 +173,16 @@ void UniformGrid::ConstructDisplayLines()
 	// loop through x direction
 	for (int i = 0; i < this->_numXCells; i++)
 	{
-		sf::Vertex lineVert[] =
-		{
-				sf::Vertex(sf::Vector2f(i * _cellSize, 0)),
-				sf::Vertex(sf::Vector2f(i * _cellSize, WINDOW_HEIGHT))
-		};
+		// push back the line with calculated coordinates
+		this->_gridlines.push_back(Line(sf::Vertex(sf::Vector2f(i * _cellSize, 0)),
+			sf::Vertex(sf::Vector2f(i * _cellSize, WINDOW_HEIGHT))));
+
 	}
 
 	// loop through y direction
 	for (int i = 0; i < this->_numYCells; i++)
 	{
-		sf::Vertex lineHorizontal[] =
-		{
-				sf::Vertex(sf::Vector2f(0, i * _cellSize)),
-				sf::Vertex(sf::Vector2f(WINDOW_WIDTH, i * _cellSize))
-		};
+		this->_gridlines.push_back(Line(sf::Vertex(sf::Vector2f(0, i * _cellSize)),
+			sf::Vertex(sf::Vector2f(WINDOW_WIDTH, i * _cellSize))));
 	}
 }
