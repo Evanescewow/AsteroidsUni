@@ -302,13 +302,19 @@ for (int i = 0; i < this->_bullets.size(); i++)
 void Game::HandleInput()
 {
 	// Limit key spam
-	if (_lastInputClock.getElapsedTime().asSeconds() >= SHOOT_INTERVAL)
-	{
-		_lastInputClock.restart();
-	}
-	else
+	if (_lastInputClock.getElapsedTime().asSeconds() <= SHOOT_INTERVAL)
 	{
 		return;
+	}
+	
+	// flag for if an input has been given
+	bool hasKeyBeenPressed = false;
+
+	// Check for console toggle
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+	{
+		this->_console->Toggle();
+		hasKeyBeenPressed = true;	// to see if the clock should be reset
 	}
 
 	// Only allow regular keys when console is closed
@@ -317,15 +323,17 @@ void Game::HandleInput()
 		// Input for firing bullets 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
+			// create a new bullet and add it to the grid systems
 			this->_bullets.push_back(new Bullet(this->_player->GetPosition(), this->_player->GetRotation()));
 			_grid->AddObject(this->_bullets.back());
 			_quadTree->AddObject(this->_bullets.back());
+			// to see if the clock should be reset
+			hasKeyBeenPressed = true;
 		}
 	}
 
-	// Check for console toggle
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
-		this->_console->Toggle();
+	if (hasKeyBeenPressed)
+		_lastInputClock.restart();
 }
 
 void Game::UpdateSpriteGrid(WireframeSprite* sprite)
@@ -400,6 +408,16 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 		// Set col-broad quadtree
 	case (Console::CommandType::SET_BROAD_COLLISION_QUADTREE):
 		this->_collisionHandler->SetBroadCollisionMode(BroadCollisionMode::QUADTREE);
+		break;
+
+		// Set col-narrow AABB
+	case (Console::CommandType::SET_NARROW_COLLISION_AABB):
+		this->_collisionHandler->SetNarrowCollisionMode(NarrowCollisionMode::AABB);
+		break;
+
+		// Set col-narrow AABB
+	case (Console::CommandType::SET_NARROW_COLLISION_SAT):
+		this->_collisionHandler->SetNarrowCollisionMode(NarrowCollisionMode::SEPERATED_AXIS_THEOREM);
 		break;
 
 	case (Console::CommandType::INVALID_COMMAND):

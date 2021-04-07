@@ -172,34 +172,23 @@ Console::ParsedCommandData Console::ParseSet(std::deque<std::string>& parameters
 	// Set command for broad phase collision
 	else if (parameters[0] == "col-broad")
 	{
-		outputMessage = "broad phase collision set to ";
+		// setup the output message sentence (only used on successful commands)
+		outputMessage = "Broad phase collision set to " + parameters[1];
 
 		// set broad phase to brute force
 		if (parameters[1] == "bruteforce")
-		{
 			output.commandType = CommandType::SET_BROAD_COLLISION_BRUTE_FORCE;
-			outputMessage += "brute force.";
-		}
-
 		// set broad phase to uniform grid
 		else if (parameters[1] == "uniformgrid")
-		{
 			output.commandType = CommandType::SET_BROAD_COLLISION_UNIFORM_GRID;
-			outputMessage += "uniform grid.";
-		}
-
 		// set broad phase to quadtree
 		else if (parameters[1] == "quadtree")
-		{
 			output.commandType = CommandType::SET_BROAD_COLLISION_QUADTREE;
-			outputMessage += "quadtree.";
-		}
-
 		// invalid mode type given
 		else
 		{
 			output.commandType = CommandType::INVALID_COMMAND;
-			outputMessage = "Invalid broad phase collision mode given.";
+			outputMessage = "Invalid broad phase collision mode given";
 			outputMessageColor = ERROR_COLOUR;
 		}
 	}
@@ -207,17 +196,32 @@ Console::ParsedCommandData Console::ParseSet(std::deque<std::string>& parameters
 	// set command for narrow phase collision
 	else if (parameters[0] == "col-narrow")
 	{
+		outputMessage = "Narrow phase collision set to " + parameters[1];
 
+#		// Set narrow phase collision to Axis-Aligned bounding box
+		if (parameters[1] == "aabb")
+			output.commandType = CommandType::SET_NARROW_COLLISION_AABB;
+		// Set narrow phase collision to separated axis theorem
+		else if (parameters[1] == "sat")
+			output.commandType = CommandType::SET_NARROW_COLLISION_SAT;
+		// Invalid narrow mode given
+		else
+		{
+			output.commandType = CommandType::INVALID_COMMAND;
+			outputMessage = "Invalid narrow phase collision mode given";
+			outputMessageColor = ERROR_COLOUR;
+		}
 	}
-
 	// Invalid set parameter
 	else
 	{
 		output.commandType = CommandType::INVALID_COMMAND;
-		outputMessage = parameters[0] + " is not a valid set parameter.";
+		outputMessage = parameters[0] + " is not a valid set parameter";
 		outputMessageColor = ERROR_COLOUR;
 	}
 
+	// finish the output message sentence
+	outputMessage += ".";
 	// print output and return result
 	this->PushBackMesage(outputMessage, outputMessageColor);
 	return output;
