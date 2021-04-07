@@ -139,3 +139,49 @@ Cell& UniformGrid::GetCell(int x, int y)
 	// is less intensive than using a multi-dimensional vector
 	return _cells[y * _numXCells + x];
 }
+
+/* void Draw
+* Brief:
+* Loops trough all stored grid lines and prints them to the passed render
+* target
+* Params:
+*	<sf::RenderWindow*> window	-	the window to draw to
+*/
+void UniformGrid::Draw(sf::RenderWindow* window)
+{
+	// loop through lines
+	for (auto it = this->_gridlines.begin(); it != this->_gridlines.end(); it++)
+	{
+		window->draw(*it, 2, sf::Lines);
+	}
+}
+
+/* void ConstructDisplayLines
+* Brief:
+* calculates the coordinates for each of the grid lines needed
+* and then stores them in _gridlines;
+*/
+void UniformGrid::ConstructDisplayLines()
+{
+	// need two loops here as width of screen might not = the height
+
+	// loop through x direction
+	for (int i = 0; i < this->_numXCells; i++)
+	{
+		sf::Vertex lineVert[] =
+		{
+				sf::Vertex(sf::Vector2f(i * _cellSize, 0)),
+				sf::Vertex(sf::Vector2f(i * _cellSize, WINDOW_HEIGHT))
+		};
+	}
+
+	// loop through y direction
+	for (int i = 0; i < this->_numYCells; i++)
+	{
+		sf::Vertex lineHorizontal[] =
+		{
+				sf::Vertex(sf::Vector2f(0, i * _cellSize)),
+				sf::Vertex(sf::Vector2f(WINDOW_WIDTH, i * _cellSize))
+		};
+	}
+}

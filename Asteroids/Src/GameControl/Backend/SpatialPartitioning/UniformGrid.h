@@ -73,6 +73,22 @@ public:
 	*/
 	Cell& GetCell(const sf::Vector2f& pos);
 
+	/* void Draw
+	* Brief:
+	* Loops trough all stored grid lines and prints them to the passed render
+	* target
+	* Params:
+	*	<sf::RenderWindow*> window	-	the window to draw to
+	*/
+	void Draw(sf::RenderWindow* window);
+
+	/* void ConstructDisplayLines
+	* Brief:
+	* calculates the coordinates for each of the grid lines needed
+	* and then stores them in _gridlines;
+	*/
+	void ConstructDisplayLines();
+
 
 private:
 	// Members
@@ -80,6 +96,7 @@ private:
 	int _numYCells;							// Number of cells in the Y direction
 	std::vector<Cell> _cells;				// Container for all the cells in the grid
 
+	std::vector<sf::Vertex[]> _gridlines;
 
 	// constants
 	static constexpr int _cellSize = 35;	// Size in window pixels of each cell (both x and y)
