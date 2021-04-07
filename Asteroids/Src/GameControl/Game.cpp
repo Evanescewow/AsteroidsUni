@@ -90,10 +90,11 @@ GameState Game::Go()
 void Game::ComposeFrame()
 {
 	// Draw quadtree
-	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::QUADTREE)
-		this->_quadTree->Draw(_window);
-	else
-		this->_grid->Draw(_window);
+	if (this->_drawGrid)
+		if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::QUADTREE)
+			this->_quadTree->Draw(_window);
+		else
+			this->_grid->Draw(_window);
 
 	// Draw Player
 	_player->Draw(_window);
@@ -140,14 +141,14 @@ void Game::UpdateModel()
 	// Update Player
 	_player->Update();
 
-	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::UNIFORM_GRID)
-		UpdateSpriteGrid(_player);
-
 	// Update Asteroids
 	this->UpdateAsteroids();
 
 	// Update Bullets
 	this->UpdateBullets();
+
+	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::UNIFORM_GRID)
+		UpdateSpriteGrid(_player);
 
 	// Check mode to see if should update quadtree
 	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::QUADTREE)
@@ -394,6 +395,11 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 		// Toggle Bullet Collision
 	case (Console::CommandType::TOGGLE_BULLET_COLLISION):
 		this->_collisionHandler->ToggleBulletCollision();
+		break;
+
+		// Toggle Draw grid
+	case (Console::CommandType::TOGGLE_DRAW_GRID):
+		this->_drawGrid = !this->_drawGrid;
 		break;
 		
 		// Set col-broad uniformgrid

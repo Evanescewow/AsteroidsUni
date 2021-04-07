@@ -101,7 +101,9 @@ private:
 	UniformGrid* _grid = nullptr;					// Grid for uniform spatial partitioning
 	QuadTree* _quadTree = nullptr;
 	CollisionHandler* _collisionHandler = nullptr;	// Handles all application collision logic
-	Console* _console = nullptr;
+	Console* _console = nullptr;					// The interal console to the app
+
+	bool _drawGrid = false;
 
 	// Constants
 	static constexpr float SHOOT_INTERVAL = 0.2f;	// interval in seconds between each bullet firing

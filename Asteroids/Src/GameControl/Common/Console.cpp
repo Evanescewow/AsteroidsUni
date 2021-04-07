@@ -253,6 +253,12 @@ Console::ParsedCommandData Console::ParseToggle(std::deque<std::string>& paramet
 		outputMessage += "Bullet collision";
 	}
 
+	// toggle drawing of grid
+	else if (parameters[0] == "draw-grid")
+	{
+		output.commandType = CommandType::TOGGLE_DRAW_GRID;
+		outputMessage += "Drawing of spatial grid";
+	}
 
 	// not a valid toggle target, print error return invalid command
 	else
