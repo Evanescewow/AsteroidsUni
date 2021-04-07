@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Global/ApplicationDefines.h"
 #include "GameControl/Game.h"
+#include "GameControl/GameStateMachine.h"
 
 
 // Entry point
@@ -14,7 +15,7 @@ int main(void)
 	sf::Clock clock;
 	sf::Time time;
 
-	Game theGame(&window);
+	GameStateMachine application(&window);
 
 	while (window.isOpen())
 	{
@@ -40,7 +41,7 @@ int main(void)
 		}
 		
 		// Run the game
-		theGame.Go();
+		application.Go();
 	}
 
 	return EXIT_SUCCESS;
