@@ -82,10 +82,13 @@ private:
 	*/
 	void HandleInput();
 
+	void DrawGrid();
+
+	void UpdateGrid();
+
 	void UpdateSpriteGrid(WireframeSprite*sprite );
 	void UpdateQuadTree();
-
-	void HandleConsoleCommands(Console::ParsedCommandData& data);
+		void HandleConsoleCommands(Console::ParsedCommandData& data);
 
 private:
 	sf::RenderWindow* _window = nullptr;
@@ -98,12 +101,12 @@ private:
 	size_t NUMBER_ASTEROIDS = 10;					// Number of asteroids on the screen
 
 	sf::Clock _lastInputClock;						// Timer to limit spam of bullet firing			
-	UniformGrid* _grid = nullptr;					// Grid for uniform spatial partitioning
+	UniformGrid* _uniformGrid = nullptr;					// Grid for uniform spatial partitioning
 	QuadTree* _quadTree = nullptr;
 	CollisionHandler* _collisionHandler = nullptr;	// Handles all application collision logic
 	Console* _console = nullptr;					// The interal console to the app
 
-	bool _drawGrid = false;
+	bool _drawGrid = false;							// Should the spatial grid be drawn to the screen
 
 	// Constants
 	static constexpr float SHOOT_INTERVAL = 0.2f;	// interval in seconds between each bullet firing

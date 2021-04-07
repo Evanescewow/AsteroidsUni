@@ -12,26 +12,26 @@ Game::Game(sf::RenderWindow* window)
 	srand((unsigned int)time(NULL));
 
 	// Create uniform grid
-	this->_grid = new UniformGrid();
+	this->_uniformGrid = new UniformGrid();
 
 	// Create uniform grid
 	this->_quadTree = new QuadTree(sf::FloatRect(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, WINDOW_WIDTH/2, WINDOW_HEIGHT/2), QUADTREE_CELL_LIMIT);
 
 	// Generate player
 	this->_player = new Player;
-	_grid->AddObject(this->_player);
+	_uniformGrid->AddObject(this->_player);
 	_quadTree->AddObject(this->_player);
 
 	// Generate asteroids
 	for (unsigned int i = 0; i < NUMBER_ASTEROIDS; i++)
 	{
 		this->_asteroids.push_back(new Asteroid(i));
-		_grid->AddObject(_asteroids.back());
+		_uniformGrid->AddObject(_asteroids.back());
 		_quadTree->AddObject(_asteroids.back());
 	}
 
 	// Create collision handler
-	this->_collisionHandler = new CollisionHandler(*_grid, _asteroids, _bullets, *_player, _quadTree);
+	this->_collisionHandler = new CollisionHandler(*_uniformGrid, _asteroids, _bullets, *_player, _quadTree);
 
 	// Create console
 	this->_console = new Console();
@@ -44,8 +44,8 @@ Game::~Game()
 		delete this->_console;
 
 	// Cleanup grid
-	if (this->_grid)
-		delete this->_grid;
+	if (this->_uniformGrid)
+		delete this->_uniformGrid;
 
 	// Cleanup quadtree
 	if (this->_quadTree)
@@ -89,12 +89,8 @@ GameState Game::Go()
 */
 void Game::ComposeFrame()
 {
-	// Draw quadtree
-	if (this->_drawGrid)
-		if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::QUADTREE)
-			this->_quadTree->Draw(_window);
-		else
-			this->_grid->Draw(_window);
+	// draw the grid to screen if enabled
+	this->DrawGrid();
 
 	// Draw Player
 	_player->Draw(_window);
@@ -147,13 +143,7 @@ void Game::UpdateModel()
 	// Update Bullets
 	this->UpdateBullets();
 
-	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::UNIFORM_GRID)
-		UpdateSpriteGrid(_player);
-
-	// Check mode to see if should update quadtree
-	if (this->_collisionHandler->GetBroadCollisionMode() == BroadCollisionMode::QUADTREE)
-	this->UpdateQuadTree();
-
+	this->UpdateGrid();
 
 	// Handle all collision logic
 	CollisionPhaseData data = this->_collisionHandler->HandleCollision();
@@ -252,8 +242,8 @@ void Game::SplitAsteroid(unsigned int asteroidIndex)
 		this->_asteroids.push_back(new Asteroid(this->_asteroids.size(), Asteroid::Size((int)asteroid->GetSize() + 1), pos, -vel));
 
 		// Add the new asteroids to their correct cells
-		this->_grid->AddObject(_asteroids[_asteroids.size()- 1]);
-		this->_grid->AddObject(_asteroids[_asteroids.size() - 2]);
+		this->_uniformGrid->AddObject(_asteroids[_asteroids.size()- 1]);
+		this->_uniformGrid->AddObject(_asteroids[_asteroids.size() - 2]);
 
 		// Add the objects to their correct quadtree
 		this->_quadTree->AddObject(_asteroids[_asteroids.size() - 1]);
@@ -261,7 +251,7 @@ void Game::SplitAsteroid(unsigned int asteroidIndex)
 	}
 
 	// clean up old asteroid
-	this->_grid->RemoveObject(asteroid);	// Remove from the corresponding cell
+	this->_uniformGrid->RemoveObject(asteroid);	// Remove from the corresponding cell
 
 	// Delete asteroid from memory
 	delete asteroid;
@@ -286,7 +276,7 @@ for (unsigned int i = 0; i < this->_bullets.size(); i++)
 	if (!this->_bullets[i]->IsVisible())
 	{
 		// Remove bullet from grid system
-		this->_grid->RemoveObject(this->_bullets[i]);
+		this->_uniformGrid->RemoveObject(this->_bullets[i]);
 		this->_quadTree->RemoveObject(this->_bullets[i]);
 
 		// Delete bullet and remove entry from vector
@@ -327,7 +317,7 @@ void Game::HandleInput()
 		{
 			// create a new bullet and add it to the grid systems
 			this->_bullets.push_back(new Bullet(this->_player->GetPosition(), this->_player->GetRotation()));
-			_grid->AddObject(this->_bullets.back());
+			_uniformGrid->AddObject(this->_bullets.back());
 			_quadTree->AddObject(this->_bullets.back());
 			// to see if the clock should be reset
 			hasKeyBeenPressed = true;
@@ -338,6 +328,42 @@ void Game::HandleInput()
 		_lastInputClock.restart();
 }
 
+void Game::DrawGrid()
+{
+	// Draw quadtree
+	if (this->_drawGrid)
+		switch (_collisionHandler->GetBroadCollisionMode())
+		{
+			// Draw the quad tree
+		case(BroadCollisionMode::QUADTREE):
+			this->_quadTree->Draw(_window);
+			break;
+
+			// draw the uniformgrid
+		case(BroadCollisionMode::UNIFORM_GRID):
+			this->_uniformGrid->Draw(_window);
+			break;
+		}
+}
+
+void Game::UpdateGrid()
+{
+	// only update the active grid so it doesn't slow down the other
+
+	switch (this->_collisionHandler->GetBroadCollisionMode())
+	{
+		// update uniform grid
+	case BroadCollisionMode::UNIFORM_GRID:
+		UpdateSpriteGrid(_player);
+		break;
+
+		// update quadtree
+	case BroadCollisionMode::QUADTREE:
+		this->UpdateQuadTree();
+		break;
+	}
+}
+
 void Game::UpdateSpriteGrid(WireframeSprite* sprite)
 {
 
@@ -346,12 +372,12 @@ void Game::UpdateSpriteGrid(WireframeSprite* sprite)
 		return;
 
 	// Check to see if the ball has changed cells
-	Cell* newCell = &_grid->GetCell((sprite)->GetPosition());
+	Cell* newCell = &_uniformGrid->GetCell((sprite)->GetPosition());
 	if (newCell != (sprite)->GetOwnerCell())
 	{
 		// update owner cell
-		this->_grid->RemoveObject(sprite);
-		_grid->AddObject(sprite, newCell);
+		this->_uniformGrid->RemoveObject(sprite);
+		_uniformGrid->AddObject(sprite, newCell);
 	}
 }
 
@@ -364,13 +390,16 @@ void Game::UpdateQuadTree()
 	// Delete the old tree
 	this->_quadTree->Clear();
 
+	// add player to tree
 	this->_quadTree->AddObject(_player);
 
+	// add asteroids to tree
 	for (auto it = this->_asteroids.begin(); it != this->_asteroids.end(); it++)
 	{
 		this->_quadTree->AddObject(*it);
 	}
 
+	// add bullets to tree
 	for (auto it = this->_bullets.begin(); it != this->_bullets.end(); it++)
 	{
 		this->_quadTree->AddObject(*it);
