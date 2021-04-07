@@ -106,6 +106,7 @@ private:
 	bool _isDivided = false;					// does this node have children
 	sf::FloatRect _boundary;					// boundary of this node
 	unsigned int _capacity;						// Maximum capacity of a quad tree before it subdivides
+	sf::Color _gridColor = sf::Color::Blue;		// color to draw the grid
 
 	sf::RectangleShape _rect;					// Rectangle shape that is draw when
 												// the draw method is called

@@ -103,10 +103,10 @@ private:
 	int _numXCells;							// Number of cells in the X direction
 	int _numYCells;							// Number of cells in the Y direction
 	std::vector<Cell> _cells;				// Container for all the cells in the grid
-
-	std::vector<Line> _gridlines;
+	std::vector<Line> _gridlines;			// Container for the grid lines called by the draw method
 
 	// constants
 	static constexpr int _cellSize = 110;	// Size in window pixels of each cell (both x and y)
+	sf::Color _gridColor = sf::Color::Blue;	// colour to draw the grid
 };
 

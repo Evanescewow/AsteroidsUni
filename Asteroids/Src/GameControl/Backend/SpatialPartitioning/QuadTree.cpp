@@ -14,7 +14,7 @@ _boundary(boundary),
 _capacity(capacity){
 
 	this->_rect.setFillColor(sf::Color::Transparent);
-	this->_rect.setOutlineColor(sf::Color::Blue);
+	this->_rect.setOutlineColor(_gridColor);
 	this->_rect.setOutlineThickness(1);
 
 	this->_rect.setPosition({ boundary.left - boundary.width, boundary.top - boundary.height });

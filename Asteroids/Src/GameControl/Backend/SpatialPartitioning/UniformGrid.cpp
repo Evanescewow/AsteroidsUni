@@ -174,15 +174,15 @@ void UniformGrid::ConstructDisplayLines()
 	for (int i = 0; i < this->_numXCells; i++)
 	{
 		// push back the line with calculated coordinates
-		this->_gridlines.push_back(Line(sf::Vertex(sf::Vector2f(i * _cellSize, 0)),
-			sf::Vertex(sf::Vector2f(i * _cellSize, WINDOW_HEIGHT))));
+		this->_gridlines.push_back(Line(sf::Vertex(sf::Vector2f(i * _cellSize, 0), _gridColor),
+			sf::Vertex(sf::Vector2f(i * _cellSize, WINDOW_HEIGHT), sf::Color::Blue)));
 
 	}
 
 	// loop through y direction
 	for (int i = 0; i < this->_numYCells; i++)
 	{
-		this->_gridlines.push_back(Line(sf::Vertex(sf::Vector2f(0, i * _cellSize)),
-			sf::Vertex(sf::Vector2f(WINDOW_WIDTH, i * _cellSize))));
+		this->_gridlines.push_back(Line(sf::Vertex(sf::Vector2f(0, i * _cellSize), _gridColor),
+			sf::Vertex(sf::Vector2f(WINDOW_WIDTH, i * _cellSize), sf::Color::Blue)));
 	}
 }
