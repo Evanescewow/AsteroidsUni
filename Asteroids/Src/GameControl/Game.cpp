@@ -278,7 +278,7 @@ void Game::SplitAsteroid(unsigned int asteroidIndex)
 */
 void Game::CleanupBullets()
 {
-for (int i = 0; i < this->_bullets.size(); i++)
+for (unsigned int i = 0; i < this->_bullets.size(); i++)
 {
 	// Check if bullet has disappeared from screen
 	if (!this->_bullets[i]->IsVisible())

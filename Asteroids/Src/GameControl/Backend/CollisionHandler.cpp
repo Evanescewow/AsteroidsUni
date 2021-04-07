@@ -117,7 +117,7 @@ void CollisionHandler::HandleBroadPhaseUniformGrid(std::function<bool(WireframeS
 	auto cells = this->_grid._cells;
 
 	// loop through all cells
-	for (int i = 0; i < cells.size(); i++)
+	for (unsigned int i = 0; i < cells.size(); i++)
 	{
 		Cell* cell = &cells[i];
 
@@ -126,7 +126,7 @@ void CollisionHandler::HandleBroadPhaseUniformGrid(std::function<bool(WireframeS
 		int y = i / this->_grid._numXCells;
 
 		// loop through cell objects
-		for (int j = 0; j < cell->_objects.size(); j++)
+		for (unsigned int j = 0; j < cell->_objects.size(); j++)
 		{
 			WireframeSprite* sprite = cell->_objects[j];	// local pointer to current ball in current cell
 
@@ -168,7 +168,7 @@ void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSpri
 	others.clear();
 
 	// Asteroid collision
-	for (int i = 0; i < this->_asteroids.size(); i++)
+	for (unsigned int i = 0; i < this->_asteroids.size(); i++)
 	{
 		// find any possible collisions with the asteroid
 		this->_quadTree->Query(this->_asteroids[i]->GetBoundingRectangle(), others);
@@ -177,7 +177,7 @@ void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSpri
 	}
 
 	// Bullet collision
-	for (int i = 0; i < this->_bullets.size(); i++)
+	for (unsigned int i = 0; i < this->_bullets.size(); i++)
 	{
 		// find any possible collisions with the asteroid
 		this->_quadTree->Query(this->_bullets[i]->GetBoundingRectangle(), others);
@@ -195,6 +195,8 @@ void CollisionHandler::CheckCollision(std::function<bool(WireframeSprite&, Wiref
 
 	for (unsigned int i = startingIndex; i < spritesToCheck.size(); i++)
 	{
+		if (!spritesToCheck[i])
+			return;
 
 		// no point checking collision against yourself
 		if (spritesToCheck[i] == spriteA)

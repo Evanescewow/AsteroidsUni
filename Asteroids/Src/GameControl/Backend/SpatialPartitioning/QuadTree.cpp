@@ -125,7 +125,7 @@ void QuadTree::Query(sf::FloatRect range, std::vector<WireframeSprite*>& sprites
 	// if it does add the points from this quadtree that are contained within the range
 	else
 	{
-		for (int i = 0; i < this->_sprites.size(); i++)
+		for (unsigned int i = 0; i < this->_sprites.size(); i++)
 		{
 			// Broad phase test for if there's any point checking for further collision
 			// AABB

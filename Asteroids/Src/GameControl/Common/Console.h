@@ -26,7 +26,7 @@ public:
 		commandType(type),
 		additionalValue(value){}
 
-		CommandType commandType;	// type of command returned
+		CommandType commandType = CommandType::INVALID_COMMAND;	// type of command returned
 		float additionalValue = 0.0f;	// container for set commands
 	};
 

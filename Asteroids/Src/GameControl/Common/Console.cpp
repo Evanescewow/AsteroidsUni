@@ -22,7 +22,7 @@ Console::Console()
 	_currentCommand.setString(_commandPrefix);
 
 	// work out number of messages that can be shown
-	nMaxMessages = (yPixelSize / 16) - 1;
+	nMaxMessages = static_cast<unsigned int>((yPixelSize / 16.0f) - 1.0f);
 }
 
 Console::~Console()
@@ -91,7 +91,7 @@ void Console::Draw(sf::RenderWindow* window)
 	window->draw(_currentCommand);
 
 	// Draw previous commands / messages
-	for (int i = 0; i < this->_consoleMessages.size(); i++)
+	for (unsigned int i = 0; i < this->_consoleMessages.size(); i++)
 	{
 		// set position starting from the top and working down
 		this->_consoleMessages[i].setPosition({ 0, (float)(0 + (i * TEXT_SIZE)) });

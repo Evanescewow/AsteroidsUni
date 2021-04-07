@@ -128,7 +128,7 @@ void Asteroid::GenerateRandomVariables()
 	} while (posY > thirdHeight && posY < thirdHeight*2);
 
 	// Generate velocity values
-	velAngle = RandomFloat(0, 2*M_PI);
+	velAngle = RandomFloat(0, static_cast<float>(2*M_PI));
 
 
 	// Set the position and velocity
