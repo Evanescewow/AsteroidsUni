@@ -16,7 +16,8 @@ public:
 		SET_BROAD_COLLISION_UNIFORM_GRID,
 		SET_BROAD_COLLISION_QUADTREE,
 		SET_NARROW_COLLISION_AABB,
-		SET_NARROW_COLLISION_SAT
+		SET_NARROW_COLLISION_SAT,
+		SPAWN_ASTEROID
 	};
 
 	struct ParsedCommandData
@@ -48,6 +49,7 @@ private:
 
 	ParsedCommandData ParseSet(std::deque<std::string>& parameters);
 	ParsedCommandData ParseToggle(std::deque<std::string>& parameters);
+	ParsedCommandData ParseSpawn(std::deque<std::string>& parameters);
 
 private:
 	bool _isEnabled = false;

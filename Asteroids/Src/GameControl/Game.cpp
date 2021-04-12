@@ -456,11 +456,28 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 		this->_collisionHandler->SetNarrowCollisionMode(NarrowCollisionMode::SEPERATED_AXIS_THEOREM);
 		break;
 
+		// Spawn asteroids
+	case (Console::CommandType::SPAWN_ASTEROID):
+		this->SpawnAsteroids(static_cast<unsigned int>(data.additionalValue));
+		break;
+
 	case (Console::CommandType::INVALID_COMMAND):
 		break;
 
 	//default:
 		//throw std::exception("Error processing console command.");
 		//break;
+	}
+}
+
+void Game::SpawnAsteroids(const unsigned int nAsteroidsToSpawn)
+{
+	// Loop through n asteroids to spawn for asteroid spawning
+	for (unsigned int i = 0; i < nAsteroidsToSpawn; i++)
+	{
+		// add the new asteroid to the cointainer and add to the grid systems
+		this->_asteroids.push_back(new Asteroid(this->_asteroids.size()));
+		this->_uniformGrid->AddObject(this->_asteroids.back());
+		this->_quadTree->AddObject(this->_asteroids.back());
 	}
 }

@@ -127,6 +127,10 @@ Console::ParsedCommandData Console::ParseCommand(std::string& text)
 	else if (commandWord == "toggle")
 		return this->ParseToggle(words);
 
+	// Parse spawn commands (probably only asteroids
+	else if (commandWord == "spawn")
+		return this->ParseSpawn(words);
+
 	// Command not valid
 	else
 	{
@@ -273,4 +277,55 @@ Console::ParsedCommandData Console::ParseToggle(std::deque<std::string>& paramet
 	outputMessage += " has been toggled.";
 	this->PushBackMesage(outputMessage, COMMAND_SUCCESS_COLOUR);
 	return output;
+}
+
+Console::ParsedCommandData Console::ParseSpawn(std::deque<std::string>& parameters)
+{
+	int nSpawnAmount = 0;
+	std::string outputMessage;
+	ParsedCommandData outputData;
+	sf::Color messageColor = COMMAND_SUCCESS_COLOUR;
+
+	outputData.commandType = CommandType::INVALID_COMMAND;
+
+	// Check for correct number of parameters before int test
+	if (parameters.size() != 2)
+	{
+		outputMessage = "Invalid number of parameters given.";
+		messageColor = ERROR_COLOUR;
+	}
+	// if not correct number of parameters no further tests are needed
+	else {
+		// Test for valid integer
+		try {
+			nSpawnAmount = std::stoi(parameters[1]);
+		}
+		// if the parameter isn't an int give an error message and return
+		catch (...)
+		{
+			messageColor = ERROR_COLOUR;
+			outputMessage = "Invalid number of spawn objects given.";
+			this->PushBackMesage(outputMessage, messageColor);
+			return outputData;
+		}
+
+		// User wants to spawn asteroids
+		if (parameters[0] == "asteroid")
+		{
+			outputData.commandType = CommandType::SPAWN_ASTEROID;
+			outputData.additionalValue = static_cast<float>(nSpawnAmount);
+			outputMessage = parameters[1] + " asteroids have been spawned.";
+		}
+
+		// Invalid spawn object given
+		else
+		{
+			outputMessage = parameters[0] + " is not a spawnable object.";
+			messageColor = ERROR_COLOUR;
+		}
+	}
+
+	// return message and data
+	this->PushBackMesage(outputMessage, messageColor);
+	return outputData;
 }
