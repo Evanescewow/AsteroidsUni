@@ -12,7 +12,7 @@ public:
 	*  assigns references of the desired font and texture to be used
 	*  for the button.
 	*  References are used as this class depends upon these parameters
-	*  and thus share a common lifecycle. Behaviour for deleted references
+	*  and thus share a common lifecycle. Behavior for deleted references
 	*  is undefined.
 	*/
 	Button(sf::Font& textFont, sf::Texture& buttonTexture);
@@ -84,6 +84,6 @@ private:
 	sf::Sprite _button;									// sprite which holds the global bounds
 
 	sf::Color _defaultTextColor = sf::Color::White;		// default colour of the button text
-	sf::Color hoverColor = sf::Color::Red;				// highlight button text colour
+	sf::Color _hoverColor = sf::Color::Red;				// highlight button text colour
 };
 

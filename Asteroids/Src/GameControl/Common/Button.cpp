@@ -93,7 +93,7 @@ void Button::Draw(sf::RenderWindow* window)
 /* void Update
 * Brief:
 *	Checks to see if the mouse position is within the bounds of the button.
-*	if this is the case it will hilight the text within the button.
+*	if this is the case it will highlight the text within the button.
 *	if a mouse click is detected while inside the button this method will return true
 *	otherwise false.
 * Params:
@@ -105,7 +105,7 @@ bool Button::Update(sf::RenderWindow* targetWindow)
 	if (this->_button.getGlobalBounds().contains(targetWindow->mapPixelToCoords(sf::Mouse::getPosition(*targetWindow))))
 	{
 		// if it is change text to hover color
-		this->_buttonText.setFillColor(hoverColor);
+		this->_buttonText.setFillColor(_hoverColor);
 		
 		// check if the user is clicking
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))

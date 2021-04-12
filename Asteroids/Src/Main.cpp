@@ -46,7 +46,6 @@ int main(void)
 		{
 			// If the state machine returns false an exit call has been processed
 			window.close();
-			break;
 		}
 	}
 
