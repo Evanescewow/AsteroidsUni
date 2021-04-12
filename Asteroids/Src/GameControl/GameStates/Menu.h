@@ -14,6 +14,9 @@ private:
 	void ComposeFrame() override;
 	void UpdateModel() override;
 
+	void SetupDisplayText();
+	void SetupButtons();
+
 // Private members
 private:
 	// Font and Texture info
@@ -27,7 +30,11 @@ private:
 	Button* _controlsButton = nullptr;
 	Button* _exitButton = nullptr;
 
+	// Display Text
+	sf::Text _titleText;
+	sf::Text _creditText;
+
 	// Constants
-	sf::Color BUTTON_DEFAULT_COLOUR = sf::Color::Magenta;
+	sf::Color BUTTON_DEFAULT_COLOUR = sf::Color(100, 100, 100);
 };
 
