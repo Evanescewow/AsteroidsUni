@@ -6,7 +6,7 @@
 
 Game::Game(sf::RenderWindow* window)
 	:
-	_window(window)
+	State(window, GameState::GAME)
 {
 	// Seed Random Generation
 	srand((unsigned int)time(NULL));
@@ -68,20 +68,7 @@ Game::~Game()
 	}
 }
 
-/*void Go
- * Brief:
- * Public run function for the game class. Each call to this function
- * represents one game frame. This method is called in program entry point.
-*/
-GameState Game::Go()
-{
-	this->_window->clear(sf::Color::Black);
-	this->UpdateModel();
-	this->ComposeFrame();
-	this->_window->display();
 
-	return GameState::GAME;
-}
 
 /*void ComposeFrame
  * Brief:

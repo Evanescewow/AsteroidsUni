@@ -1,6 +1,7 @@
 #pragma once
 #include "Game.h"
-#include "Common/Console.h"
+#include "Menu.h"
+#include "../Common/Console.h"
 
 
 class GameStateMachine
@@ -12,6 +13,8 @@ public:
 private:
 
 	Game _game;
-	GameState _currentState = GameState::GAME;
+	Menu _menu;
+
+	GameState _currentState = GameState::MENU;
 };
 

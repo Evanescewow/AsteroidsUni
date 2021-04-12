@@ -2,7 +2,8 @@
 
 GameStateMachine::GameStateMachine(sf::RenderWindow* window)
 	:
-	_game(window)
+	_game(window),
+	_menu(window)
 {
 }
 
@@ -14,6 +15,9 @@ void GameStateMachine::Go()
 	{
 	case GameState::GAME:
 		 _currentState = _game.Go();
+		break;
+	case GameState::MENU:
+		_currentState = _menu.Go();
 		break;
 	}
 }

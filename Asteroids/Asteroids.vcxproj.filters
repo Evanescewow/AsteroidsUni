@@ -18,7 +18,7 @@
     <ClCompile Include="Src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\GameControl\Game.cpp">
+    <ClCompile Include="Src\GameControl\GameStates\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\GameObjects\Base\WireframeSprite.cpp">
@@ -42,10 +42,16 @@
     <ClCompile Include="Src\GameControl\Common\Console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\GameControl\GameStateMachine.cpp">
+    <ClCompile Include="Src\GameControl\GameStates\GameStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\QuadTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GameControl\GameStates\Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GameControl\Common\Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,7 +59,7 @@
     <ClInclude Include="Src\Global\ApplicationDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\GameControl\Game.h">
+    <ClInclude Include="Src\GameControl\GameStates\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\GameObjects\Base\WireframeSprite.h">
@@ -77,13 +83,19 @@
     <ClInclude Include="Src\GameControl\Common\Console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\GameControl\State.h">
+    <ClInclude Include="Src\GameControl\GameStates\State.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Src\GameControl\GameStateMachine.h">
+    <ClInclude Include="Src\GameControl\GameStates\GameStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\QuadTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\GameControl\GameStates\Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\GameControl\Common\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

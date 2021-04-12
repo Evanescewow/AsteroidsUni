@@ -19,31 +19,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\GameControl\Common\Button.cpp" />
+    <ClCompile Include="Src\GameControl\GameStates\Menu.cpp" />
     <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\QuadTree.cpp" />
     <ClCompile Include="Src\GameControl\Common\Console.cpp" />
     <ClCompile Include="Src\GameControl\Backend\CollisionHandler.cpp" />
-    <ClCompile Include="Src\GameControl\GameStateMachine.cpp" />
+    <ClCompile Include="Src\GameControl\GameStates\GameStateMachine.cpp" />
     <ClCompile Include="Src\GameObjects\Other\Bullet.cpp" />
     <ClCompile Include="Src\GameObjects\Other\Asteroid.cpp" />
-    <ClCompile Include="Src\GameControl\Game.cpp" />
+    <ClCompile Include="Src\GameControl\GameStates\Game.cpp" />
     <ClCompile Include="Src\Main.cpp" />
     <ClCompile Include="Src\GameObjects\Base\WireframeSprite.cpp" />
     <ClCompile Include="Src\GameObjects\Player\Player.cpp" />
     <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\GameControl\Common\Button.h" />
+    <ClInclude Include="Src\GameControl\GameStates\Menu.h" />
     <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\QuadTree.h" />
     <ClInclude Include="Src\GameControl\Common\Console.h" />
     <ClInclude Include="Src\GameControl\Backend\CollisionHandler.h" />
-    <ClInclude Include="Src\GameControl\GameStateMachine.h" />
+    <ClInclude Include="Src\GameControl\GameStates\GameStateMachine.h" />
     <ClInclude Include="Src\GameObjects\Other\Bullet.h" />
     <ClInclude Include="Src\GameObjects\Other\Asteroid.h" />
-    <ClInclude Include="Src\GameControl\Game.h" />
+    <ClInclude Include="Src\GameControl\GameStates\Game.h" />
     <ClInclude Include="Src\Global\ApplicationDefines.h" />
     <ClInclude Include="Src\GameObjects\Base\WireframeSprite.h" />
     <ClInclude Include="Src\GameObjects\Player\Player.h" />
     <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.h" />
-    <ClInclude Include="Src\GameControl\State.h" />
+    <ClInclude Include="Src\GameControl\GameStates\State.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

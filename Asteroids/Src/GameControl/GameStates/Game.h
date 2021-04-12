@@ -1,13 +1,12 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include "../GameObjects/Player/Player.h"
-#include "../GameObjects/Other/Asteroid.h"
-#include "Common/Console.h"
+#include "../../GameObjects/Player/Player.h"
+#include "../../GameObjects/Other/Asteroid.h"
+#include "../Common/Console.h"
 #include "State.h"
-#include "Backend/CollisionHandler.h"
-#include "Backend/SpatialPartitioning/UniformGrid.h"
-#include "Backend/SpatialPartitioning/QuadTree.h"
-#include "../Global/ApplicationDefines.h"
+#include "../Backend/CollisionHandler.h"
+#include "../Backend/SpatialPartitioning/UniformGrid.h"
+#include "../Backend/SpatialPartitioning/QuadTree.h"
+#include "../../Global/ApplicationDefines.h"
 #include <functional>
 #include <vector>
 
@@ -20,21 +19,12 @@ public:
 	Game(sf::RenderWindow* window);
 	~Game();
 
-	/*void Go
-	 * Brief:
-	 * Public run function for the game class. Each call to this function
-	 * represents one game frame. This method is called in program entry point.
-	*/
-	GameState Go();
-
-
 private:
-	
 	/*void ComposeFrame
 	 * Brief:
 	 * Handles drawing for all game objects
 	*/
-	void ComposeFrame();
+	void ComposeFrame() override;
 
 	/*void UpdateModel
 	 * Brief:
@@ -42,7 +32,7 @@ private:
 	 * user input such as spawning bullets. Cleans up any game objects that
 	 * should no longer be in the game. (bullets)
 	*/
-	void UpdateModel();
+	void UpdateModel() override;
 
 	/*void UpdateAsteroids
 	 * Brief:
@@ -92,9 +82,6 @@ private:
 	void SpawnAsteroids(const unsigned int nAsteroidsToSpawn);
 
 private:
-	sf::RenderWindow* _window = nullptr;
-
-
 	// Game Variables
 	Player* _player = nullptr;						// player triangle object
 	std::vector<Asteroid*> _asteroids;				// container for the asteroids
@@ -102,10 +89,10 @@ private:
 	size_t NUMBER_ASTEROIDS = 0;					// Number of asteroids on the screen
 
 	sf::Clock _lastInputClock;						// Timer to limit spam of bullet firing			
-	UniformGrid* _uniformGrid = nullptr;					// Grid for uniform spatial partitioning
+	UniformGrid* _uniformGrid = nullptr;			// Grid for uniform spatial partitioning
 	QuadTree* _quadTree = nullptr;
 	CollisionHandler* _collisionHandler = nullptr;	// Handles all application collision logic
-	Console* _console = nullptr;					// The interal console to the app
+	Console* _console = nullptr;					// The internal console to the app
 
 	bool _drawGrid = false;							// Should the spatial grid be drawn to the screen
 
