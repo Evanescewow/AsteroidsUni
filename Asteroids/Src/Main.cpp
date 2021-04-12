@@ -42,7 +42,12 @@ int main(void)
 		}
 		
 		// Run the machine
-		application.Go();
+		if (!application.Go())
+		{
+			// If the state machine returns false an exit call has been processed
+			window.close();
+			break;
+		}
 	}
 
 	return EXIT_SUCCESS;

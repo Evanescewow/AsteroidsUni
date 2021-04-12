@@ -7,8 +7,10 @@ GameStateMachine::GameStateMachine(sf::RenderWindow* window)
 {
 }
 
-void GameStateMachine::Go()
+bool GameStateMachine::Go()
 {
+	bool shouldExit = false;
+
 
 	// determine game state and run them
 	switch (this->_currentState)
@@ -20,4 +22,9 @@ void GameStateMachine::Go()
 		_currentState = _menu.Go();
 		break;
 	}
+
+	// check for exit condition
+	if (_currentState == GameState::EXIT)
+		return false;
+	return true;
 }

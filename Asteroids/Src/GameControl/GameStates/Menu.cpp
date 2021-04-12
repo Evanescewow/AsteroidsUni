@@ -10,7 +10,7 @@ Menu::Menu(sf::RenderWindow* window)
 		throw std::exception("Unable to load button texture!");
 
 	// Load font
-	if (!_buttonTextFont.loadFromFile(fontLocation))
+	if (!_buttonTextFont.loadFromFile(_fontLocation))
 		throw std::exception("Unable to load font!");
 
 	// create buttons
@@ -21,17 +21,15 @@ Menu::Menu(sf::RenderWindow* window)
 
 	// setup buttons
 	playButton->SetPosition({ posX, 0.0f });
-	playButton->SetButtonColor(_buttonDefaultColor);
+	playButton->SetButtonColor(BUTTON_DEFAULT_COLOUR);
 }
 
 
-Menu::~Menu()
-{
-
-}
+Menu::~Menu(){}
 
 void Menu::ComposeFrame()
 {
+	// Draw buttons
 	this->playButton->Draw(_window);
 }
 

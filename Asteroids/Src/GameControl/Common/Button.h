@@ -23,7 +23,7 @@ private:
 	sf::Texture& _buttonTexture;
 	sf::Sprite _button;
 
-	sf::Color defaultTextColor = sf::Color::White;
-	sf::Color hoverColor = sf::Color::Cyan;
+	sf::Color _defaultTextColor = sf::Color::White;
+	sf::Color hoverColor = sf::Color::Red;
 };
 

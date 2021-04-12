@@ -16,13 +16,16 @@ private:
 
 // Private members
 private:
+	// Font and Texture info
 	sf::Font _buttonTextFont;
 	sf::Texture _buttonTexture;
-	std::string fontLocation = "arial.ttf";
+	std::string _fontLocation = "arial.ttf";
 	std::string _textureLocation = "Assets/button.png";
 
-	sf::Color _buttonDefaultColor = sf::Color::Magenta;
-
+	// Buttons
 	Button* playButton = nullptr;
+
+	// Constants
+	sf::Color BUTTON_DEFAULT_COLOUR = sf::Color::Magenta;
 };
 

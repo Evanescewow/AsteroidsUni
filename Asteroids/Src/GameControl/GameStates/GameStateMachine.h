@@ -8,7 +8,7 @@ class GameStateMachine
 {
 public:
 	GameStateMachine(sf::RenderWindow* window);
-	void Go();
+	bool Go();
 
 private:
 

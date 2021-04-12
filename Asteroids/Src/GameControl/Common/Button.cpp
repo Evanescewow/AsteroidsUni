@@ -34,7 +34,7 @@ void Button::SetButtonColor(const sf::Color color)
 
 void Button::SetButtonTextColor(const sf::Color color)
 {
-	this->defaultTextColor = color;
+	this->_defaultTextColor = color;
 }
 
 void Button::SetScale(const float scale)
@@ -64,7 +64,7 @@ bool Button::Update(sf::RenderWindow* targetWindow)
 	else
 	{
 		// otherwise reset text colour and return false
-		this->_buttonText.setFillColor(defaultTextColor);
+		this->_buttonText.setFillColor(_defaultTextColor);
 	}
 
 	return false;
