@@ -23,7 +23,9 @@ private:
 	std::string _textureLocation = "Assets/button.png";
 
 	// Buttons
-	Button* playButton = nullptr;
+	Button* _playButton = nullptr;
+	Button* _controlsButton = nullptr;
+	Button* _exitButton = nullptr;
 
 	// Constants
 	sf::Color BUTTON_DEFAULT_COLOUR = sf::Color::Magenta;
