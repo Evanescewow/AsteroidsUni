@@ -72,14 +72,16 @@ void Menu::UpdateModel()
 
 void Menu::SetupDisplayText()
 {
-	// setup display text
+	// set text font
 	_titleText.setFont(_buttonTextFont);
 	_creditText.setFont(_buttonTextFont);
 
+	// setup title text
 	_titleText.setString("                     ASTEROIDS\nA Spatial Partitioning Demonstration");
 	_titleText.setPosition({ (WINDOW_WIDTH / 2) - (_titleText.getGlobalBounds().width / 2) , 20.0f});
 	_titleText.setFillColor(sf::Color(95, 100, 110));
 
+	// setup the credit text
 	_creditText.setString("created by Jack Clements");
 	_creditText.setScale({ 0.7f, 0.7f });
 	_creditText.setPosition({  WINDOW_WIDTH -(_creditText.getGlobalBounds().width + WINDOW_WIDTH / 16),

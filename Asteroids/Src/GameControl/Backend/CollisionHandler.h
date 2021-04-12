@@ -64,6 +64,7 @@ private:
 	// narrow phase algorithms
 	static bool AABBCollision(WireframeSprite& spriteA, WireframeSprite& spriteB);
 	static bool TestSATCollision(WireframeSprite& spriteA, WireframeSprite& spriteB);
+	static bool BypassNarrowTest(WireframeSprite& spriteA, WireframeSprite& spriteB);
 
 	// private members
 private:

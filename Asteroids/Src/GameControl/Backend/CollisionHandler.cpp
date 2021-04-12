@@ -163,8 +163,10 @@ void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSpri
 	std::vector<WireframeSprite*> others;
 
 	// player collision
-	this->_quadTree->Query(this->_player.GetBoundingRectangle(), others);	
-	this->CheckCollision(collisionAlgorithm, &this->_player, others, 0, isPlayerColliding);
+	this->_quadTree->Query(this->_player.GetBoundingRectangle(), others);
+	// if the collision mode is AABB, quadtree already uses aabb to narrow down search so can just ignore the detailed test
+	this->CheckCollision((this->_narrowCollisionMode == NarrowCollisionMode::AABB? BypassNarrowTest:collisionAlgorithm),
+		&this->_player, others, 0, isPlayerColliding);
 	others.clear();
 
 	// Asteroid collision
@@ -172,7 +174,9 @@ void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSpri
 	{
 		// find any possible collisions with the asteroid
 		this->_quadTree->Query(this->_asteroids[i]->GetBoundingRectangle(), others);
-		this->CheckCollision(collisionAlgorithm, this->_asteroids[i], others, 0, isPlayerColliding);
+		// if the collision mode is AABB, quadtree already uses aabb to narrow down search so can just ignore the detailed test
+		this->CheckCollision((this->_narrowCollisionMode == NarrowCollisionMode::AABB ? BypassNarrowTest : collisionAlgorithm),
+			this->_asteroids[i], others, 0, isPlayerColliding);
 		others.clear();
 	}
 
@@ -181,7 +185,9 @@ void CollisionHandler::HandleBroadPhaseQuadtree(std::function<bool(WireframeSpri
 	{
 		// find any possible collisions with the asteroid
 		this->_quadTree->Query(this->_bullets[i]->GetBoundingRectangle(), others);
-		this->CheckCollision(collisionAlgorithm, this->_bullets[i], others, 0, isPlayerColliding);
+		// if the collision mode is AABB, quadtree already uses aabb to narrow down search so can just ignore the detailed test
+		this->CheckCollision((this->_narrowCollisionMode == NarrowCollisionMode::AABB ? BypassNarrowTest : collisionAlgorithm),
+			this->_bullets[i], others, 0, isPlayerColliding);
 		others.clear();
 	}
 
@@ -334,5 +340,10 @@ bool CollisionHandler::TestSATCollision(WireframeSprite& spriteA, WireframeSprit
 		}
 	}
 
+	return true;
+}
+
+bool CollisionHandler::BypassNarrowTest(WireframeSprite& spriteA, WireframeSprite& spriteB)
+{
 	return true;
 }
