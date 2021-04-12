@@ -20,10 +20,9 @@ private:
 // Private members
 private:
 	// Font and Texture info
-	sf::Font _buttonTextFont;
-	sf::Texture _buttonTexture;
-	std::string _fontLocation = "arial.ttf";
-	std::string _textureLocation = "Assets/button.png";
+	sf::Font& _buttonTextFont;
+	sf::Texture& _buttonTexture;
+
 
 	// Buttons
 	Button* _playButton = nullptr;

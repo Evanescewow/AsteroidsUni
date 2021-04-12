@@ -56,10 +56,9 @@ private:
 	sf::RectangleShape _consoleRect;
 
 	std::string _inputText;
-	std::string fontLocation = "arial.ttf";
 	std::string _commandPrefix = "-> ";
 
-	sf::Font _consoleFont;
+	sf::Font& _consoleFont;
 	sf::Text _currentCommand;
 	std::deque<sf::Text> _consoleMessages;
 

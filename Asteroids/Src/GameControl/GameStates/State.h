@@ -5,7 +5,7 @@ enum class GameState
 {
 	MENU,
 	GAME,
-	CONTROL,
+	CONTROLS,
 	EXIT,
 	INVALID
 };

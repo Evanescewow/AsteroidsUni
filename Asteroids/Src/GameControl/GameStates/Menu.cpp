@@ -1,17 +1,14 @@
 #include "Menu.h"
 #include "../../Global/ApplicationDefines.h"
+#include "../Common/ResourceManager.h"
 
 Menu::Menu(sf::RenderWindow* window)
 	:
-	State(window, GameState::MENU)
+	State(window, GameState::MENU),
+	_buttonTextFont(ResourceManager::getInstance().GetFont()),
+	_buttonTexture(ResourceManager::getInstance().GetButtonTexture())
 {
-	// load texture
-	if (!_buttonTexture.loadFromFile(_textureLocation))
-		throw std::exception("Unable to load button texture!");
 
-	// Load font
-	if (!_buttonTextFont.loadFromFile(_fontLocation))
-		throw std::exception("Unable to load font!");
 
 	// create buttons
 	_playButton = new Button(_buttonTextFont, _buttonTexture, "Play");
@@ -63,7 +60,7 @@ void Menu::UpdateModel()
 
 	// Update controls button and if user is pressing change to the controls screen
 	if (this->_controlsButton->Update(_window))
-		this->_nextState = GameState::CONTROL;
+		this->_nextState = GameState::CONTROLS;
 
 	// Update exit button and if user is pressing issue the command to exit application
 	if (this->_exitButton->Update(_window))

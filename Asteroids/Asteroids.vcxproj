@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\GameControl\GameStates\ControlsScreen.cpp" />
     <ClCompile Include="Src\GameControl\Common\Button.cpp" />
     <ClCompile Include="Src\GameControl\GameStates\Menu.cpp" />
     <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\QuadTree.cpp" />
@@ -34,6 +35,8 @@
     <ClCompile Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\GameControl\Common\ResourceManager.h" />
+    <ClInclude Include="Src\GameControl\GameStates\ControlsScreen.h" />
     <ClInclude Include="Src\GameControl\Common\Button.h" />
     <ClInclude Include="Src\GameControl\GameStates\Menu.h" />
     <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\QuadTree.h" />

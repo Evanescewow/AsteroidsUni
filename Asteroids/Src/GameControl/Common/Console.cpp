@@ -1,13 +1,11 @@
 #include "Console.h"
 #include <sstream>
+#include "ResourceManager.h"
 
 Console::Console()
+	:
+	_consoleFont(ResourceManager::getInstance().GetFont())
 {
-	// Load console font
-	if (!_consoleFont.loadFromFile(fontLocation))
-	{
-		throw std::exception("Unable to load font for console");
-	}
 
 	// Setup console background
 	_consoleRect.setSize({ xPixelSize, yPixelSize });
@@ -25,10 +23,7 @@ Console::Console()
 	nMaxMessages = static_cast<unsigned int>((yPixelSize / 16.0f) - 1.0f);
 }
 
-Console::~Console()
-{
-
-}
+Console::~Console(){}
 
 Console::ParsedCommandData Console::Update(sf::RenderWindow* window)
 {
