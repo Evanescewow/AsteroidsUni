@@ -2,6 +2,14 @@
 #include <sstream>
 #include "ResourceManager.h"
 
+/* Constructor
+ * Brief:
+ *	assigns the correct parameters for the displayed command
+ *  at the bottom of the shell alongside the rect in which
+ *  the console is contained.
+ *  Calculated the maximum number of previous messages that can be
+ *  displayed given the console dimensions.
+ */
 Console::Console()
 	:
 	_consoleFont(ResourceManager::getInstance().GetFont())
@@ -25,6 +33,17 @@ Console::Console()
 
 Console::~Console(){}
 
+/* ParsedCommandData Update
+ * Brief:
+ * Handles all logic for the console. updates text locations,
+ * text display, message push back and the parsing of entered
+ * commands. Returns parsed command data if applicable.
+ * Params:
+ *	<renderwindow*> window	-	window in which the text entered
+ *								events should be polled from
+ * Returns:
+ *  Parsed command data as custom data structure
+ */
 Console::ParsedCommandData Console::Update(sf::RenderWindow* window)
 {
 	// Output
@@ -77,6 +96,14 @@ Console::ParsedCommandData Console::Update(sf::RenderWindow* window)
 	return outputData;
 }
 
+/* void Draw
+ * Brief:
+ * Draws the console and any text to the screen.
+ * This includes both the current command and any previously
+ * entered messages / responses.
+ * Params:
+ *	<renderwindow*> window	-	window to draw the console to
+ */
 void Console::Draw(sf::RenderWindow* window)
 {
 	// Draw the console background
@@ -94,6 +121,16 @@ void Console::Draw(sf::RenderWindow* window)
 	}
 }
 
+/* ParsedCommandData ParseCommand
+ * Brief:
+ * Parses the raw command string. works out the main command word
+ * and calls the other parse commands accordingly passing them
+ * the remaining parameters.
+ * Params:
+ * <string&> text		-	string containing possible command
+ * Returns:
+ * <ParsedCommandData>	-	data containing parsed command information
+ */
 Console::ParsedCommandData Console::ParseCommand(std::string& text)
 {
 	//transform the string to lowercase
@@ -137,21 +174,7 @@ Console::ParsedCommandData Console::ParseCommand(std::string& text)
 	return ParsedCommandData(CommandType::INVALID_COMMAND);
 }
 
-void Console::PushBackMesage(std::string& text, sf::Color textColour)
-{
-	// Create new text object to be pushed back to messages
-	sf::Text newMessageText = sf::Text(text, _consoleFont, TEXT_SIZE);
-	newMessageText.setFillColor(textColour);
-	
-	// Check if max number of messages has been reached
-	if (this->_consoleMessages.size() >= nMaxMessages)
-	{
-		this->_consoleMessages.pop_front();	// pop the first element out of the deque
-	}
-	// Push back the new message and clear the input text
-	this->_consoleMessages.push_back(newMessageText);
-}
-
+// parses the set command given the parameters passed
 Console::ParsedCommandData Console::ParseSet(std::deque<std::string>& parameters)
 {
 	ParsedCommandData output;
@@ -226,6 +249,7 @@ Console::ParsedCommandData Console::ParseSet(std::deque<std::string>& parameters
 	return output;
 }
 
+// parses the toggle command given the parameters passed
 Console::ParsedCommandData Console::ParseToggle(std::deque<std::string>& parameters)
 {
 	ParsedCommandData output;
@@ -274,6 +298,7 @@ Console::ParsedCommandData Console::ParseToggle(std::deque<std::string>& paramet
 	return output;
 }
 
+// parses the spawn command given the parameters passed
 Console::ParsedCommandData Console::ParseSpawn(std::deque<std::string>& parameters)
 {
 	int nSpawnAmount = 0;
@@ -323,4 +348,28 @@ Console::ParsedCommandData Console::ParseSpawn(std::deque<std::string>& paramete
 	// return message and data
 	this->PushBackMesage(outputMessage, messageColor);
 	return outputData;
+}
+
+/* void PushBackMessage
+ * Brief:
+ *	Pushes a string to the previous messages container. Defaults to a white
+ *  colour however can be changed for messages such as error or success text.
+ * Params:
+ *	<string> text		-	string to push back to console previous messages
+ *  <color> textColor	-	colour to set the pushed back message to
+ * Returns:
+ */
+void Console::PushBackMesage(std::string& text, sf::Color textColour)
+{
+	// Create new text object to be pushed back to messages
+	sf::Text newMessageText = sf::Text(text, _consoleFont, TEXT_SIZE);
+	newMessageText.setFillColor(textColour);
+
+	// Check if max number of messages has been reached
+	if (this->_consoleMessages.size() >= nMaxMessages)
+	{
+		this->_consoleMessages.pop_front();	// pop the first element out of the deque
+	}
+	// Push back the new message and clear the input text
+	this->_consoleMessages.push_back(newMessageText);
 }
