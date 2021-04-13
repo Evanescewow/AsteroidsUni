@@ -1,9 +1,18 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+/* Class ResourceManager
+*  (Singleton)
+ * Brief:
+ *	Loads all the textures and fonts that will be used in the project. This is done to 
+ *  eliminate the need to load the same items multiple times. Class has been made as singleton
+ *  to allow access to these common items throughout the project.
+ */
 class ResourceManager
 {
 public:
+	// Method to get the static instance of the resource manager
+	// after first creation the same instance will always be returned.
 	static ResourceManager& getInstance()
 	{
 		static ResourceManager    instance; // Guaranteed to be destroyed.
@@ -11,6 +20,8 @@ public:
 		return instance;
 	}
 private:
+
+	// Load the fonts and textures
 	ResourceManager() {
 		// load texture
 		if (!_buttonTexture.loadFromFile(_textureLocation))
@@ -21,32 +32,24 @@ private:
 			throw std::exception("Unable to load font!");
 	}                    // Constructor? (the {} brackets) are needed here.
 
-	// C++ 11
-	// =======
-	// We can use the better technique of deleting the methods
-	// we don't want.
 public:
+	// delete copy constructor and assignment operator to prevent
+	// accidental instance creation
 	ResourceManager(ResourceManager const&) = delete;
 	void operator=(ResourceManager const&) = delete;
 
-	// Note: Scott Meyers mentions in his Effective Modern
-	//       C++ book, that deleted functions should generally
-	//       be public as it results in better error messages
-	//       due to the compilers behavior to check accessibility
-	//       before deleted status
 
-
-	// Getter for the stuff
+	// Getters for the fonts and textures
 	sf::Font& GetFont() { return _textFont; }
 	sf::Texture& GetButtonTexture() { return _buttonTexture; }
 
 
 	// Members
 private:
-	sf::Font _textFont;
-	sf::Texture _buttonTexture;
-
-	std::string _fontLocation = "arial.ttf";
-	std::string _textureLocation = "Assets/button.png";
+	sf::Font _textFont;										// Main font for the text throughout the application
+	sf::Texture _buttonTexture;								// texture to assign to buttons
+		
+	std::string _fontLocation = "arial.ttf";				// Path for the font
+	std::string _textureLocation = "Assets/button.png";		// Path for the button texture
 };
 
