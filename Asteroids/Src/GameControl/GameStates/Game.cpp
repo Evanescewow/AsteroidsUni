@@ -296,6 +296,13 @@ void Game::HandleInput()
 		hasKeyBeenPressed = true;	// to see if the clock should be reset
 	}
 
+	// Check for escape to menu
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	{
+		this->_nextState = GameState::MENU;
+		hasKeyBeenPressed = true;
+	}
+
 	// Only allow regular keys when console is closed
 	if (!this->_console->IsOpen())
 	{
