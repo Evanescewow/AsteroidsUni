@@ -318,10 +318,17 @@ void Game::HandleInput()
 		}
 	}
 
+	// if user pressed a binding reset the cooldown timer
 	if (hasKeyBeenPressed)
 		_lastInputClock.restart();
 }
 
+/* void DrawGrid
+ * Brief:
+ * Checks if the user wishes to draw the spatial grid to the screen.
+ * if yes then the grid will be drawn depending on the active broad
+ * collision mode.
+ */
 void Game::DrawGrid()
 {
 	// Draw quadtree
@@ -340,6 +347,10 @@ void Game::DrawGrid()
 		}
 }
 
+/* void UpdateGrid
+ * Brief:
+ * Checks which grid system is active and updates it accordingly.
+ */
 void Game::UpdateGrid()
 {
 	// only update the active grid so it doesn't slow down the other
@@ -358,6 +369,15 @@ void Game::UpdateGrid()
 	}
 }
 
+/* void UpdateSpriteGrid
+ * Brief:
+ *	Takes a sprite and calculates which grid in the uniform grid
+ *	system it should belong to. If that grid doesn't matches
+ *  the stored pointer to it's current grid, removes the sprite from that grid
+ *  and re adds it to the new cell.
+ * Params:
+ *	<wireframeSprite*> sprite	-	sprite to update in grid
+ */
 void Game::UpdateSpriteGrid(WireframeSprite* sprite)
 {
 
@@ -375,6 +395,12 @@ void Game::UpdateSpriteGrid(WireframeSprite* sprite)
 	}
 }
 
+/* void UpdateQuadTree
+ * Brief:
+ *	Updates the objects in the quadtree by first clearing it
+ *  then reconstructing it. This seems to be a reasonably efficient
+ *  solution to updating the positions of sprites within the system.
+ */
 void Game::UpdateQuadTree()
 {
 	// do nothing if not the right collision mode
@@ -400,6 +426,14 @@ void Game::UpdateQuadTree()
 	}
 }
 
+/* void HandleConsoleCommands
+ * Brief:
+ *	takes parsed command data from the console class
+ *	and performs command logic based upon that data in the form of a
+ *  switch.
+ * Params:
+ *	<ParsedCommandData> data	-	data to determine what actions to take
+ */
 void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 {
 	switch (data.commandType)
@@ -464,6 +498,13 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 	}
 }
 
+/* void SpawnAsteroids
+ * Brief:
+ *	takes in n asteroids and spawns them into the game. firstly adds them to the
+ *  asteroid container followed by adding them to any present grid systems.
+ * Params:
+ *	<unsigned int> nAsteroidsToSpawn	-	number of asteroids to spawn
+ */
 void Game::SpawnAsteroids(const unsigned int nAsteroidsToSpawn)
 {
 	// Loop through n asteroids to spawn for asteroid spawning

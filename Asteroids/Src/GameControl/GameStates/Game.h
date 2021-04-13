@@ -53,7 +53,6 @@ private:
 	 * window.
 	*/
 	void CleanupBullets();
-	
 
 	/*void SplitAsteroid
 	 * Brief:
@@ -72,13 +71,56 @@ private:
 	*/
 	void HandleInput();
 
+	/* void DrawGrid
+	 * Brief:
+	 * Checks if the user wishes to draw the spatial grid to the screen.
+	 * if yes then the grid will be drawn depending on the active broad
+	 * collision mode.
+	 */
 	void DrawGrid();
 
+	/* void UpdateGrid
+	 * Brief:
+	 * Checks which grid system is active and updates it accordingly.
+	 */
 	void UpdateGrid();
 
+	/* void UpdateSpriteGrid
+	 * Brief:
+	 *	Takes a sprite and calculates which grid in the uniform grid
+	 *	system it should belong to. If that grid doesn't matches
+	 *  the stored pointer to it's current grid, removes the sprite from that grid
+	 *  and re adds it to the new cell.
+	 * Params:
+	 *	<wireframeSprite*> sprite	-	sprite to update in grid
+	 */
 	void UpdateSpriteGrid(WireframeSprite*sprite );
+
+	/* void UpdateQuadTree
+	 * Brief:
+	 *	Updates the objects in the quadtree by first clearing it
+	 *  then reconstructing it. This seems to be a reasonably efficient
+	 *  solution to updating the positions of sprites within the system.
+	 */
 	void UpdateQuadTree();
+
+	/* void HandleConsoleCommands
+	 * Brief:
+	 *	takes parsed command data from the console class
+	 *	and performs command logic based upon that data in the form of a
+	 *  switch.
+	 * Params:
+	 *	<ParsedCommandData> data	-	data to determine what actions to take
+	 */
 	void HandleConsoleCommands(Console::ParsedCommandData& data);
+
+	/* void SpawnAsteroids
+	 * Brief:
+	 *	takes in n asteroids and spawns them into the game. firstly adds them to the
+	 *  asteroid container followed by adding them to any present grid systems.
+	 * Params:
+	 *	<unsigned int> nAsteroidsToSpawn	-	number of asteroids to spawn
+	 */
 	void SpawnAsteroids(const unsigned int nAsteroidsToSpawn);
 
 private:
@@ -98,6 +140,7 @@ private:
 
 	// Constants
 	static constexpr float SHOOT_INTERVAL = 0.2f;	// interval in seconds between each bullet firing
-	static constexpr int QUADTREE_CELL_LIMIT = 5;
+	static constexpr int QUADTREE_CELL_LIMIT = 5;	// How many sprites can exist in a quad tree cell
+													// Before it subdivides
 };
 
