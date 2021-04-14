@@ -3,6 +3,15 @@
 #include "../../Global/ApplicationDefines.h"
 #include <math.h>
 
+/* Constructor
+ * Brief:
+ *	assigns the properties to the base convex shape.
+ *	also assigns properties to the hitbox shape. Key to note
+ *	that the hitbox isn't updated or drawn unless it's flagged as
+ *	active.
+ * Params:
+ *	<size_t> pointCount	-	Number of points the convex shape could contain
+ */
 WireframeSprite::WireframeSprite(size_t pointCount)
 {
 	this->_shape.setPointCount(pointCount);
@@ -14,11 +23,17 @@ WireframeSprite::WireframeSprite(size_t pointCount)
 	this->hitboxShape.setOutlineColor(sf::Color::Green);
 }
 
-WireframeSprite::~WireframeSprite()
-{
+WireframeSprite::~WireframeSprite(){}
 
-}
-
+/* virtual void Update
+ * Brief:
+ *	handles the update of the sprite object. sets the position of the sprite
+ *	and hitbox in accordance with the private position member.
+ *	updates container of internal points for the next frame. This is done to
+ *	assist with predictive collision.
+ * Method can be ovrriden by children to include extra functionality however
+ * a call to the base method should always be included.
+ */
 void WireframeSprite::Update()
 {
 	// Update position of the convex shape
@@ -27,10 +42,12 @@ void WireframeSprite::Update()
 
 
 	//Update position for the hit-box display
-	sf::FloatRect rect = this->_shape.getGlobalBounds();
-	this->hitboxShape.setPosition(this->_shape.getPosition().x - rect.width / 2, this->_shape.getPosition().y - rect.height / 2);
-	this->hitboxShape.setSize({ rect.width, rect.height });
-
+	if (this->isHitboxVisible)
+	{
+		sf::FloatRect rect = this->_shape.getGlobalBounds();
+		this->hitboxShape.setPosition(this->_shape.getPosition().x - rect.width / 2, this->_shape.getPosition().y - rect.height / 2);
+		this->hitboxShape.setSize({ rect.width, rect.height });
+	}
 	// Update internal points
 	float s = std::sin(((this->_shape.getRotation() * (float)M_PI) / 180.0f));
 	float c = std::cos(((this->_shape.getRotation() * (float)M_PI) / 180.0f));
@@ -41,6 +58,14 @@ void WireframeSprite::Update()
 	}
 }
 
+
+/* virtual void Draw
+ * Brief:
+ * Draws the convex shape to the given window. Also draws the surrounding
+ * hitbox shape if it's enabled
+ * Params:
+ * <renderwindow*> window	-	window to draw the shapes to
+ */
 void WireframeSprite::Draw(sf::RenderWindow* window)
 {
 	// Draw sprites
@@ -51,11 +76,21 @@ void WireframeSprite::Draw(sf::RenderWindow* window)
 
 }
 
+/* void RotateMesh
+ * Brief:
+ *	rotates the object's sprite by the passed value in degrees
+ * Params:
+ *	<float> RotateDegrees	-	degrees to rotate object by
+ */
 void WireframeSprite::RotateMesh(float RotationDegrees)
 {
 	this->_shape.rotate(RotationDegrees);
 }
 
+/* void WrapCoordinates
+ * Brief:
+ *	if called wraps the object to the screen.
+ */
 void WireframeSprite::WrapCoordinates()
 {
 	sf::FloatRect rect = this->_shape.getGlobalBounds();

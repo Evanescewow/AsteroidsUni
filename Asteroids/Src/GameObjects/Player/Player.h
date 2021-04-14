@@ -17,7 +17,8 @@ public:
 	*/
 	void Update() override;
 
-	void SetColour(sf::Color color);
+	// Setter for the colour of the player shape
+	void SetColour(sf::Color color) { this->_shape.setOutlineColor(color); }
 
 private:
 	/*void CalculateStartingVerticies

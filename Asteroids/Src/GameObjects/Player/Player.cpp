@@ -34,11 +34,6 @@ void Player::Update()
 	this->WrapCoordinates();
 }
 
-void Player::SetColour(sf::Color color)
-{
-	this->_shape.setOutlineColor(color);
-}
-
 /*void CalculateStartingVerticies
  * Brief:
  * Generates starting vertex positions to form a triangle based upon

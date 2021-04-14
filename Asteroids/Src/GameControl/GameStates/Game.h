@@ -17,6 +17,8 @@ public:
 	// assigns _renderWindow to the target render device passed to it.
 	// takes event reference to hand off to the console class
 	Game(sf::RenderWindow* window);
+
+	// cleans up any dynamic memory
 	~Game();
 
 private:
