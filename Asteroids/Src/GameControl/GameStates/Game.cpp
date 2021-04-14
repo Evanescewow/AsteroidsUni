@@ -2,7 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
-#include <iostream>
+#include "../Common/ResourceManager.h"
 
 Game::Game(sf::RenderWindow* window)
 	:
@@ -10,6 +10,10 @@ Game::Game(sf::RenderWindow* window)
 {
 	// Seed Random Generation
 	srand((unsigned int)time(NULL));
+
+	// If there are command line args given, set the number of asteroids accordingly
+	if (ResourceManager::getInstance()._commandLineArgs.size() > 0)
+		this->NUMBER_ASTEROIDS = std::stoi(ResourceManager::getInstance()._commandLineArgs[0]);
 
 	// Create uniform grid
 	this->_uniformGrid = new UniformGrid();
@@ -140,8 +144,6 @@ void Game::UpdateModel()
 		this->_player->SetColour(sf::Color::Yellow);
 	else
 		this->_player->SetColour(sf::Color::Cyan);
-
-	std::cout << data.nCollisionTests << std::endl;
 
 	// cleanup any bullets marked invisible
 	this->CleanupBullets();

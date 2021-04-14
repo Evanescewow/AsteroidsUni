@@ -44,6 +44,10 @@ public:
 	sf::Texture& GetButtonTexture() { return _buttonTexture; }
 
 
+	//Giving public access to command line args only
+public:
+	std::vector<char*> _commandLineArgs;
+
 	// Members
 private:
 	sf::Font _textFont;										// Main font for the text throughout the application
