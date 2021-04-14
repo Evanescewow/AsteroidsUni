@@ -283,6 +283,14 @@ Console::ParsedCommandData Console::ParseToggle(std::deque<std::string>& paramet
 		outputMessage += "Drawing of spatial grid";
 	}
 
+	// toggle drawing of collision info
+	else if (parameters[0] == "col-info")
+	{
+		output.commandType = CommandType::TOGGLE_COLLISION_INFO;
+		outputMessage += "collision info.";
+	}
+
+
 	// not a valid toggle target, print error return invalid command
 	else
 	{

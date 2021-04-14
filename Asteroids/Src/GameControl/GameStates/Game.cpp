@@ -503,6 +503,11 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 	case (Console::CommandType::TOGGLE_DRAW_GRID):
 		this->_drawGrid = !this->_drawGrid;
 		break;
+
+		// Toggle Draw col info
+	case (Console::CommandType::TOGGLE_COLLISION_INFO):
+		this->_drawCollisionInfo = !this->_drawCollisionInfo;
+		break;
 		
 		// Set col-broad uniformgrid
 	case (Console::CommandType::SET_BROAD_COLLISION_UNIFORM_GRID):
