@@ -15,6 +15,9 @@ Game::Game(sf::RenderWindow* window)
 	if (ResourceManager::getInstance()._commandLineArgs.size() > 0)
 		this->NUMBER_ASTEROIDS = std::stoi(ResourceManager::getInstance()._commandLineArgs[0]);
 
+	// setup collision info properties
+	this->SetupCollisionInfoDisplay();
+
 	// Create uniform grid
 	this->_uniformGrid = new UniformGrid();
 
@@ -103,6 +106,12 @@ void Game::ComposeFrame()
 	if (this->_console->IsOpen())
 		this->_console->Draw(_window);
 
+	// Draw the collision info if flag set
+	if (this->_drawCollisionInfo)
+	{
+		this->_window->draw(this->_collisionInfoBackground);
+		this->_window->draw(this->_collisionInfo);
+	}
 }
 
 /*void UpdateModel
@@ -134,10 +143,14 @@ void Game::UpdateModel()
 	// Update Bullets
 	this->UpdateBullets();
 
+	// Update grid systems
 	this->UpdateGrid();
 
 	// Handle all collision logic
 	CollisionPhaseData data = this->_collisionHandler->HandleCollision();
+
+	// Update collision text
+	this->UpdateCollisionText(data.nCollisionTests, data.nCollisions);
 
 	// temp player collision demonstration
 	if (data.isPlayerColliding)
@@ -428,6 +441,34 @@ void Game::UpdateQuadTree()
 	}
 }
 
+/* void UpdateCollisionText
+ * Brief:
+ * Updates the collision text with the number of collision and
+ * collision tests.
+ */
+void Game::UpdateCollisionText(unsigned int nCollisionTests, unsigned int nCollisions)
+{
+	// only update collisions if flag is set
+	if (!this->_drawCollisionInfo)
+		return;
+
+
+	// Update max col tests
+	if (nCollisionTests > _maxColTests)
+		_maxColTests = nCollisionTests;
+
+	// update min col tests
+	if (nCollisionTests < _minColTests)
+		_minColTests = nCollisionTests;
+
+	// set collision string
+	this->_collisionInfo.setString(
+	"Collision Tests: " + std::to_string(nCollisionTests) +
+	"\nCollisions: "	+ std::to_string(nCollisions) +
+	"\nMax Tests: "		+ std::to_string(_maxColTests) + 
+	"\nMin Tests: "		+ std::to_string(_minColTests));
+}
+
 /* void HandleConsoleCommands
  * Brief:
  *	takes parsed command data from the console class
@@ -438,6 +479,8 @@ void Game::UpdateQuadTree()
  */
 void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 {
+	bool resetColVariables = false;
+
 	switch (data.commandType)
 	{
 
@@ -464,26 +507,31 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 		// Set col-broad uniformgrid
 	case (Console::CommandType::SET_BROAD_COLLISION_UNIFORM_GRID):
 		this->_collisionHandler->SetBroadCollisionMode(BroadCollisionMode::UNIFORM_GRID);
+		resetColVariables = true;
 		break;
 
 		// Set col-broad bruteforce
 	case (Console::CommandType::SET_BROAD_COLLISION_BRUTE_FORCE):
 		this->_collisionHandler->SetBroadCollisionMode(BroadCollisionMode::BRUTE_FORCE);
+		resetColVariables = true;
 		break;
 
 		// Set col-broad quadtree
 	case (Console::CommandType::SET_BROAD_COLLISION_QUADTREE):
 		this->_collisionHandler->SetBroadCollisionMode(BroadCollisionMode::QUADTREE);
+		resetColVariables = true;
 		break;
 
 		// Set col-narrow AABB
 	case (Console::CommandType::SET_NARROW_COLLISION_AABB):
 		this->_collisionHandler->SetNarrowCollisionMode(NarrowCollisionMode::AABB);
+		resetColVariables = true;
 		break;
 
 		// Set col-narrow AABB
 	case (Console::CommandType::SET_NARROW_COLLISION_SAT):
 		this->_collisionHandler->SetNarrowCollisionMode(NarrowCollisionMode::SEPERATED_AXIS_THEOREM);
+		resetColVariables = true;
 		break;
 
 		// Spawn asteroids
@@ -497,6 +545,14 @@ void Game::HandleConsoleCommands(Console::ParsedCommandData& data)
 	//default:
 		//throw std::exception("Error processing console command.");
 		//break;
+	}
+
+
+	// if collision mode change reset min and max variables
+	if (resetColVariables)
+	{
+		this->_maxColTests = 0;
+		this->_minColTests = INT_MAX;
 	}
 }
 
@@ -517,4 +573,23 @@ void Game::SpawnAsteroids(const unsigned int nAsteroidsToSpawn)
 		this->_uniformGrid->AddObject(this->_asteroids.back());
 		this->_quadTree->AddObject(this->_asteroids.back());
 	}
+}
+
+// Setup parameters for collision info
+void Game::SetupCollisionInfoDisplay()
+{
+	float tempSize = static_cast<float>(WINDOW_WIDTH - WINDOW_WIDTH / 8);
+
+	// setup collision info text
+	this->_collisionInfo.setFont(ResourceManager::getInstance().GetFont());
+	this->_collisionInfo.setPosition({ tempSize, 10.0f });
+	this->_collisionInfo.setCharacterSize(14);
+	this->_collisionInfo.setFillColor(sf::Color::Cyan);
+
+	// setup background for collision info text
+	this->_collisionInfoBackground.setSize({ tempSize, 100.0f});
+	this->_collisionInfoBackground.setFillColor(sf::Color::Black);
+	this->_collisionInfoBackground.setOutlineColor(sf::Color::Red);
+	this->_collisionInfoBackground.setPosition({ tempSize, 0 });
+
 }

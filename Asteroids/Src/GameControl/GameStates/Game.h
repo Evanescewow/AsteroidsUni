@@ -106,6 +106,16 @@ private:
 	 */
 	void UpdateQuadTree();
 
+	/* void UpdateCollisionText
+	 * Brief:
+	 * Updates the collision text with the number of collision and 
+	 * collision tests.
+	 * Params:
+	 * <uint> nCollisiontests	-	number of collision tests performed
+	 * <uint> nCollisions		-	number of collisions detected
+	 */
+	void UpdateCollisionText(unsigned int nCollisionTests, unsigned int nCollisions);
+
 	/* void HandleConsoleCommands
 	 * Brief:
 	 *	takes parsed command data from the console class
@@ -125,6 +135,9 @@ private:
 	 */
 	void SpawnAsteroids(const unsigned int nAsteroidsToSpawn);
 
+	// Setup parameters for collision info
+	void SetupCollisionInfoDisplay();
+
 private:
 	// Game Variables
 	Player* _player = nullptr;						// player triangle object
@@ -139,6 +152,14 @@ private:
 	Console* _console = nullptr;					// The internal console to the app
 
 	bool _drawGrid = false;							// Should the spatial grid be drawn to the screen
+	bool _drawCollisionInfo = true;					// Should the text showing number of collisions be shown
+
+	sf::RectangleShape _collisionInfoBackground;	// background for the collision info
+	sf::Text _collisionInfo;						// text regarding collision data
+
+	// min and max col tests for current collision settings
+	unsigned int _minColTests = INT_MAX;
+	unsigned int _maxColTests = 0;
 
 	// Constants
 	static constexpr float SHOOT_INTERVAL = 0.2f;	// interval in seconds between each bullet firing
