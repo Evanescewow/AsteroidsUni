@@ -4,6 +4,7 @@
 #include "../../Global/ApplicationDefines.h"
 #include "../../GameControl/Backend/SpatialPartitioning/UniformGrid.h"
 #include <ctime>
+#include "../../GameControl/Common/ResourceManager.h"
 
 // Contains the different radius sizes
 std::map<Asteroid::Size, int> Asteroid::_radi = { { Asteroid::Size::LARGE, 55 }, { Asteroid::Size::MEDIUM, 32 }, { Asteroid::Size::SMALL, 20 } };
@@ -25,6 +26,14 @@ Asteroid::Asteroid(unsigned int arrayIndex, Size size, sf::Vector2f pos, sf::Vec
 	_size((Asteroid::Size)size),
 	_indexInGameObjectArray(arrayIndex)
 {
+	// if custom asteroid start size is given set it
+	if (ResourceManager::getInstance()._commandLineArgs.size() > 0)
+	{
+		std::map<Asteroid::Size, int>::iterator it = _radi.find(Asteroid::Size::LARGE);
+		if (it != _radi.end())
+			it->second = std::stoi(ResourceManager::getInstance()._commandLineArgs[1]);
+	}
+
 	// Setup basic properties
 	this->_shape.setFillColor(sf::Color::Transparent);
 	this->_shape.setOutlineColor(ASTEROID_COLOR);

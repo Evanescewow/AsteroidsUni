@@ -6,6 +6,10 @@
 #include "GameControl/GameStates/GameStateMachine.h"
 #include "GameControl/Common/ResourceManager.h"
 
+
+// Comamnd line args are
+// asteroid number | asteroid starting size | ug grid size
+
 // Check if a string is an integer
 bool IsNumber(const std::string& s)
 {
@@ -21,7 +25,7 @@ bool HandleCmdArgs(int argc, char* argv[])
 		bool validArgsGive = true;
 
 		// Check if correct amount of parameters given
-		if (argc != 3)
+		if (argc != 4)
 			validArgsGive = false;
 
 		// Check all arguments are numbers
@@ -33,6 +37,7 @@ bool HandleCmdArgs(int argc, char* argv[])
 			}
 		}
 
+		// If args aren't valid return false so test mode is disabled
 		if (!validArgsGive)
 		{
 			return false;
@@ -52,7 +57,7 @@ bool HandleCmdArgs(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
 	// Handle any arguments passed to command line
-	bool isTestMode = HandleCmdArgs(argc - 1, argv);
+	bool isTestMode = HandleCmdArgs(argc, argv);
 
 	//setup game window
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, 24), WINDOW_TITLE, sf::Style::Titlebar | sf::Style::Close);

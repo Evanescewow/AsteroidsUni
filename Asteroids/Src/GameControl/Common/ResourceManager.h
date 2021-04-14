@@ -46,7 +46,7 @@ public:
 
 	//Giving public access to command line args only
 public:
-	std::vector<char*> _commandLineArgs;
+	std::vector<char*> _commandLineArgs;					// all args already verified as int
 
 	// Members
 private:

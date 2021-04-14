@@ -1,12 +1,16 @@
 #include "UniformGrid.h"
 #include "../../../Global/ApplicationDefines.h"
+#include "../../Common/ResourceManager.h"
 
 UniformGrid::UniformGrid()
 {
+	// if custom cell size has been given set it
+	if (ResourceManager::getInstance()._commandLineArgs.size() > 0)
+		this->_cellSize = std::stoi(ResourceManager::getInstance()._commandLineArgs[2]);
+
 	// Calculate number of cells in x and y directions
 	_numXCells = static_cast<int>(ceil((float)WINDOW_WIDTH / _cellSize));
 	_numYCells = static_cast<int>(ceil((float)WINDOW_HEIGHT / _cellSize));
-
 
 	// Fill the cells container with correct size
 	_cells.resize(_numXCells * _numYCells);
