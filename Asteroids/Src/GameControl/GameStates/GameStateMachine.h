@@ -22,8 +22,9 @@ public:
 	 *  all the different states contained within the machine
 	 * Params:
 	 *	<renderwindow*> window	-	window to pass to all the states
+	 *  <GameState> startingState - starting state of the application
 	 */
-	GameStateMachine(sf::RenderWindow* window);
+	GameStateMachine(sf::RenderWindow* window, GameState startingState = GameState::MENU);
 
 	/* bool Go
 	 * Brief:
@@ -45,7 +46,7 @@ private:
 	Menu _menu;									// Menu screen state
 	ControlsScreen _controlsScreen;				// Controls screen state
 
-	GameState _currentState = GameState::MENU;	// current state of the application
+	GameState _currentState = GameState::INVALID;	// current state of the application
 	static constexpr float BUTTON_RESET_TIME_IN_SECONDS = 0.2f;	// amount of time before another button press is registered
 };
 

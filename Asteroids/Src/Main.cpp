@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include "Global/ApplicationDefines.h"
 #include "GameControl/GameStates/Game.h"
 #include "GameControl/GameStates/GameStateMachine.h"
@@ -15,6 +16,10 @@ int main(void)
 	sf::Clock clock;
 	sf::Time time;
 
+	// counter for rolling fps average
+	unsigned long fpsCounter = 0;
+	unsigned long frameCounter = 0;
+
 	// State machine to handle different application screens
 	GameStateMachine application(&window);
 
@@ -24,7 +29,9 @@ int main(void)
 		time = clock.getElapsedTime();
 
 		// Update window title
-		std::string title = (std::string)WINDOW_TITLE + " | FPS: " + std::to_string(1.0f / time.asSeconds());
+		unsigned int fps = 1.0f / time.asSeconds();
+		fpsCounter += fps;
+		std::string title = (std::string)WINDOW_TITLE + " | FPS: " + std::to_string(fps);
 		window.setTitle(title);
 
 		// reset fps clock
@@ -47,7 +54,15 @@ int main(void)
 			// If the state machine returns false an exit call has been processed
 			window.close();
 		}
+
+		// Increment frame counter for average fps
+		frameCounter++;
 	}
+
+	// output average fps
+	unsigned long averageFps = fpsCounter / frameCounter;
+	std::cout << "Average FPS: " << averageFps;
+
 
 	return EXIT_SUCCESS;
 }

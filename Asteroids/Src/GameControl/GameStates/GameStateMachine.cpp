@@ -6,12 +6,14 @@
  *  all the different states contained within the machine
  * Params:
  *	<renderwindow*> window	-	window to pass to all the states
+ *  <GameState> startingState - starting state of the application
  */
-GameStateMachine::GameStateMachine(sf::RenderWindow* window)
+GameStateMachine::GameStateMachine(sf::RenderWindow* window, GameState startingState)
 	:
 	_game(window),
 	_menu(window),
-	_controlsScreen(window)
+	_controlsScreen(window),
+	_currentState(startingState)
 {
 }
 
