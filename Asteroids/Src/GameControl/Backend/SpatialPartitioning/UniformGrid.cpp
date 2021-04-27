@@ -36,13 +36,7 @@ void UniformGrid::AddObject(WireframeSprite* object)
 	// Find cell object is contained in
 	Cell* cell = &GetCell(object->GetPosition());
 
-	// add object to that cell
-	cell->_objects.push_back(object);
-
-	// setup owner and index links inside the object
-	// (index is stored to speed up vector searches when removing)
-	object->SetOwnerCell(cell);
-	object->SetOwnerCellIndex(cell->_objects.size() - 1);
+	this->AddObject(object, cell);
 }
 
 /* void AddObject
@@ -72,7 +66,7 @@ void UniformGrid::AddObject(WireframeSprite* object, Cell* cell)
 */
 void UniformGrid::RemoveObject(WireframeSprite* object)
 {
-	// Creat reference to object container for readability
+	// Create reference to object container for readability
 	std::vector<WireframeSprite*>& objects = object->GetOwnerCell()->_objects;
 
 	// do a vector swap to put target object at the back (if not already there)

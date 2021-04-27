@@ -46,8 +46,6 @@ QuadTree::~QuadTree()
 */
 void QuadTree::AddObject(WireframeSprite* sprite)
 {
-	std::vector<sf::Vector2f> spritePoints = sprite->GetPoints();
-
 	sf::Vector2f pos = sprite->GetPosition();
 	if (!this->Contains(pos))
 		return;
@@ -168,7 +166,6 @@ void QuadTree::Clear()
 
 	// clear sprites of this node as it's not deleted
 	this->_sprites.clear();
-
 }
 
 /* void SubDivide

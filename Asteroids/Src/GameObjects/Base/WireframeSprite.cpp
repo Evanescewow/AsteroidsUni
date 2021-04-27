@@ -106,6 +106,4 @@ void WireframeSprite::WrapCoordinates()
 
 	else if (rect.top >= WINDOW_HEIGHT)
 		this->_position += sf::Vector2f(0.0f, -WINDOW_HEIGHT - rect.height);
-
-
 }

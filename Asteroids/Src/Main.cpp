@@ -49,6 +49,10 @@ bool HandleCmdArgs(int argc, char* argv[])
 			ResourceManager::getInstance()._commandLineArgs.push_back(argv[i]);
 		}
 	}
+	else
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -72,7 +76,7 @@ int main(int argc, char* argv[])
 	unsigned long frameCounter = 0;
 
 	// State machine to handle different application screens
-	GameStateMachine application(&window);
+	GameStateMachine application(&window, isTestMode? GameState::GAME : GameState::MENU);
 
 	while (window.isOpen())
 	{

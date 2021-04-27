@@ -52,6 +52,9 @@
     <ClInclude Include="Src\GameControl\Backend\SpatialPartitioning\UniformGrid.h" />
     <ClInclude Include="Src\GameControl\GameStates\State.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{AC766923-D661-4893-ABA5-669D8A472281}</ProjectGuid>
