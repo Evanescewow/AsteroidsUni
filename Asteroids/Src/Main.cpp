@@ -8,7 +8,7 @@
 
 
 // Comamnd line args are
-// asteroid number | asteroid starting size | ug grid size
+// asteroid number | asteroid starting size | ug grid size | medium asteroids | small asteroids
 
 // Check if a string is an integer
 bool IsNumber(const std::string& s)
@@ -25,7 +25,7 @@ bool HandleCmdArgs(int argc, char* argv[])
 		bool validArgsGive = true;
 
 		// Check if correct amount of parameters given
-		if (argc != 4)
+		if (argc != 6)
 			validArgsGive = false;
 
 		// Check all arguments are numbers

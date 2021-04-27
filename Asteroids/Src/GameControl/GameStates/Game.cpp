@@ -12,8 +12,14 @@ Game::Game(sf::RenderWindow* window)
 	srand((unsigned int)time(NULL));
 
 	// If there are command line args given, set the number of asteroids accordingly
+	unsigned int nMediumAsteroids = 0;
+	unsigned int nSmallAsteroids = 0;
 	if (ResourceManager::getInstance()._commandLineArgs.size() > 0)
+	{
 		this->NUMBER_ASTEROIDS = std::stoi(ResourceManager::getInstance()._commandLineArgs[0]);
+		nMediumAsteroids = std::stoi(ResourceManager::getInstance()._commandLineArgs[3]);
+		nSmallAsteroids = std::stoi(ResourceManager::getInstance()._commandLineArgs[4]);
+	}
 
 	// setup collision info properties
 	this->SetupCollisionInfoDisplay();
@@ -33,6 +39,19 @@ Game::Game(sf::RenderWindow* window)
 	for (unsigned int i = 0; i < NUMBER_ASTEROIDS; i++)
 	{
 		this->_asteroids.push_back(new Asteroid(i));
+		_uniformGrid->AddObject(_asteroids.back());
+		_quadTree->AddObject(_asteroids.back());
+	}
+	// Small and medium asteroids only generated at start given testing parameters
+	for (unsigned int i = 0; i < nMediumAsteroids; i++)
+	{
+		this->_asteroids.push_back(new Asteroid(i, Asteroid::Size::MEDIUM));
+		_uniformGrid->AddObject(_asteroids.back());
+		_quadTree->AddObject(_asteroids.back());
+	}
+	for (unsigned int i = 0; i < nSmallAsteroids; i++)
+	{
+		this->_asteroids.push_back(new Asteroid(i, Asteroid::Size::SMALL));
 		_uniformGrid->AddObject(_asteroids.back());
 		_quadTree->AddObject(_asteroids.back());
 	}
@@ -573,7 +592,7 @@ void Game::SpawnAsteroids(const unsigned int nAsteroidsToSpawn)
 	// Loop through n asteroids to spawn for asteroid spawning
 	for (unsigned int i = 0; i < nAsteroidsToSpawn; i++)
 	{
-		// add the new asteroid to the cointainer and add to the grid systems
+		// add the new asteroid to the container and add to the grid systems
 		this->_asteroids.push_back(new Asteroid(this->_asteroids.size()));
 		this->_uniformGrid->AddObject(this->_asteroids.back());
 		this->_quadTree->AddObject(this->_asteroids.back());
