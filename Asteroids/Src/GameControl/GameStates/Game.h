@@ -151,8 +151,8 @@ private:
 	CollisionHandler* _collisionHandler = nullptr;	// Handles all application collision logic
 	Console* _console = nullptr;					// The internal console to the app
 
-	bool _drawGrid = true;							// Should the spatial grid be drawn to the screen
-	bool _drawCollisionInfo = true;					// Should the text showing number of collisions be shown
+	bool _drawGrid = false;							// Should the spatial grid be drawn to the screen
+	bool _drawCollisionInfo = false;					// Should the text showing number of collisions be shown
 
 	sf::RectangleShape _collisionInfoBackground;	// background for the collision info
 	sf::Text _collisionInfo;						// text regarding collision data

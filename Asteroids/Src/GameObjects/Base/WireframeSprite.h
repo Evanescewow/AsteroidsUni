@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML/graphics.hpp>
+#include "SFML/Graphics.hpp"
 
 // Pre-definitions of classes to keep the header file small
 struct Cell;

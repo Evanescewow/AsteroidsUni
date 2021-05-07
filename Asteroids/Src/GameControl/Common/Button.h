@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 
 /* Class Button
  * Creates a simple button with a passed texture and font 

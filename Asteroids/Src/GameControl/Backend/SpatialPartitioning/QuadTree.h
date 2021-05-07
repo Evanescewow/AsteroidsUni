@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 
 // class pre-definitions to save header space
 class WireframeSprite;

@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 #include <fstream>
 #include <iostream>
 #include "Global/ApplicationDefines.h"
@@ -108,7 +108,6 @@ int main(int argc, char* argv[])
 			if (evt.type == sf::Event::Closed)
 			{
 				window.close();
-				return EXIT_SUCCESS;
 			}
 		}
 		

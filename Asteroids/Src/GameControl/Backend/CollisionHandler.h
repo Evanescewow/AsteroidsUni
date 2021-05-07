@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <functional>
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 
 // pre definitions to keep header file size small
 class WireframeSprite;
@@ -69,7 +69,7 @@ private:
 	// private members
 private:
 	// Collision mode options
-	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::QUADTREE;				// type of broad phase collision to be used
+	BroadCollisionMode _broardCollisionMode = BroadCollisionMode::UNIFORM_GRID;				// type of broad phase collision to be used
 	NarrowCollisionMode _narrowCollisionMode = NarrowCollisionMode::SEPERATED_AXIS_THEOREM;	// Type of narrow phase collision to be used
 
 	// Collision performance options
